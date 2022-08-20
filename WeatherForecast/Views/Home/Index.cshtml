@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>Search City and Get Weather Forecast</h1>
+
+<div>
+  <strong>City Name  :</strong><input id="txtCity" type="text" />
+  <strong>State Or Province Name  :</strong><input id="txtProvince" type="text" />
+  <br />
+  <br />
+  <button id="btnSubmit">Get Weather Forecast</button>
+</div>
+
+<div>
+  <h2>Weather Forecast</h2>
+  <table>
+    <tr>
+      <td>Weather Symbol Icon <img id="imgWeatherIconUrl" src="" title="Weather Icon" /></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>City: </strong>
+        <span id="lblCity"></span>  ,
+        <span id="lblCountry"></span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Latitude: </strong>
+        <label id="lblLat"></label><br />
+        <strong>Longitude: </strong>
+        <label id="lblLon"></label>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Description:</strong>
+        <label id="lblDescription"></label><br />
+        <strong>Humidity:</strong>
+        <label id="lblHumidity"></label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Temperature (Feels Like)<label id="lblTempFeelsLike"></label><br />
+        Temperature <label id="lblTemp"></label><br />
+        Temperature (Min)<label id="lblTempMin"></label><br />
+        Temperature (Max)<label id="lblTempMax"></label><br />
+      </td>
+    </tr>
+
+
+  </table>
+</div>
+
+<script>
+  $('#btnSubmit').on('click', function (e) {
+      var cityname = $("#txtCity").val();
+      var provincename = $("#txtProvince").val();
+      $.ajax({
+          type: "GET",
+          url: '@Url.Action("GetCall", "Home")',
+          data: { city: cityname, province: provincename },
+          success: function (data) {
+              alert("Success");
+              alert(data);
+          },
+          error: function (data) {
+              alert("Failure");
+          }
+      });
+  });
+</script>
+<div class="text-center">
+  @*  <h1 class="display-4">Welcome</h1>*@
+    <p>Andre Vosloo BBD Application</a>.</p>
+</div>
