@@ -19,7 +19,7 @@ namespace WeatherAPI.Controllers
     }
 
     [HttpGet("byCityProvince")]
-    public List<DailyForecasts> Get(string city, string province)
+    public DailyForecastsRoot Get(string city, string province)
     {
       List<Cities> cities = new List<Cities>();
       var data = _accuweatherApi.Locations.AutoCompleteSearch(city).Result;
@@ -34,17 +34,17 @@ namespace WeatherAPI.Controllers
       string keyId = cities.FirstOrDefault(c => c.AdministrativeArea.LocalizedName.Equals(province, StringComparison.InvariantCultureIgnoreCase)).Key;
 
 
-      List<DailyForecasts> dailyForecasts = new List<DailyForecasts>();
+      DailyForecastsRoot dailyForecastsRoot = new DailyForecastsRoot();
       data = _accuweatherApi.Forecast.FiveDaysOfDailyForecasts(Convert.ToInt32(keyId), true, true).Result;
 
 
       if (data != null)
       {
         var currentConditionsResultResult = JsonConvert.DeserializeObject<DailyForecastsResult>(data);
-        dailyForecasts = JsonConvert.DeserializeObject<List<DailyForecasts>>(currentConditionsResultResult.Data);
+        dailyForecastsRoot = JsonConvert.DeserializeObject<DailyForecastsRoot>(currentConditionsResultResult.Data);
       }
 
-      return dailyForecasts;
+      return dailyForecastsRoot;
     }
   }
 }

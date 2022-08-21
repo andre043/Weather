@@ -38,8 +38,32 @@ namespace WeatherAPI.Controllers
       currentAndDailyForcast.Province = result.AdministrativeArea.LocalizedName;
       currentAndDailyForcast.Country = result.Country.LocalizedName;
 
+      DailyForecastsRoot dailyForecastsRoot = new DailyForecastsRoot();
+      data = _accuweatherApi.Forecast.FiveDaysOfDailyForecasts(Convert.ToInt32(result.Key), true, true).Result;
+
+      if (data != null)
+      {
+        var currentConditionsResultResult = JsonConvert.DeserializeObject<DailyForecastsResult>(data);
+        dailyForecastsRoot = JsonConvert.DeserializeObject<DailyForecastsRoot>(currentConditionsResultResult.Data);
+      }
+
+      currentAndDailyForcast.Forcast = new List<Forcast>();
+
+      foreach (var dailyForcast in dailyForecastsRoot.DailyForecasts)
+      {
+        Forcast forcast = new Forcast();
+        forcast.Sun = dailyForcast.Sun;
+        forcast.Moon = dailyForcast.Moon;
+        forcast.Date = dailyForcast.Date;
+        forcast.RealFeelTemperature = dailyForcast.RealFeelTemperature;
+        forcast.Temperature = dailyForcast.Temperature;
+        forcast.ShortPhrase = dailyForcast.Day.ShortPhrase;
+        currentAndDailyForcast.Forcast.Add(forcast); 
+      }
       return currentAndDailyForcast;
     }
+
+    //TODO: Complete Below to match top. 
 
     [HttpGet("byCityProvince")]
     public CurrentAndDailyForcast GetAutoCompleteSearchByCityProvince(string cityName, string provinceName)

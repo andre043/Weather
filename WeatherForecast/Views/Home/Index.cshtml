@@ -29,15 +29,6 @@
     </tr>
     <tr>
       <td>
-        <strong>Latitude: </strong>
-        <label id="lblLat"></label><br />
-        <strong>Longitude: </strong>
-        <label id="lblLon"></label>
-
-      </td>
-    </tr>
-    <tr>
-      <td>
         <strong>Description:</strong>
         <label id="lblDescription"></label><br />
         <strong>Humidity:</strong>
@@ -66,6 +57,7 @@
           url: '@Url.Action("GetCall", "Home")',
           data: { city: cityname, province: provincename },
           success: function (data) {
+              alert(data);
               console.log(data);
               $("#lblKey").text(data.City);
               $("#lblCity").html(data.City);

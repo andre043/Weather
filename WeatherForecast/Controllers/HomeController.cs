@@ -20,32 +20,36 @@ namespace WeatherForecast.Controllers
 
     public ActionResult<ResultViewModel> GetCall(string city, string province, string country)
     {
+      var client = new RestClient("https://localhost:7108/CurrentAndDailyForcast/byCityProvince?cityName=" + city + "&provinceName=" + province);
+      var response = client.Execute(new RestRequest());
+      var result = JsonConvert.DeserializeObject<ResultViewModel>(response.Content);
+      return result;
 
-      if (!String.IsNullOrEmpty(city) && !String.IsNullOrEmpty(city))
-      {
-        var client = new RestClient("https://localhost:7108/CurrentAndDailyForcast/byCityProvince?cityName=" + city + "&provinceName=" + province);
-        var response = client.Execute(new RestRequest());
-        var result = JsonConvert.DeserializeObject<ResultViewModel>(response.Content);
-        return result;
-      }
-      else if (!String.IsNullOrEmpty(city) && !String.IsNullOrEmpty(country))
-      {
-        var client = new RestClient("https://localhost:7108/CurrentAndDailyForcast/byCityProvince?cityName=" + city + "&provinceName=" + province);
-        var response = client.Execute(new RestRequest());
-        var result = JsonConvert.DeserializeObject<ResultViewModel>(response.Content);
-        return result;
+      //if (!String.IsNullOrEmpty(city) && !String.IsNullOrEmpty(city))
+      //{
+      //  var client = new RestClient("https://localhost:7108/CurrentAndDailyForcast/byCityProvince?cityName=" + city + "&provinceName=" + province);
+      //  var response = client.Execute(new RestRequest());
+      //  var result = JsonConvert.DeserializeObject<ResultViewModel>(response.Content);
+      //  return result;
+      //}
+      //else if (!String.IsNullOrEmpty(city) && !String.IsNullOrEmpty(country))
+      //{
+      //  var client = new RestClient("https://localhost:7108/CurrentAndDailyForcast/byCityProvince?cityName=" + city + "&provinceName=" + province);
+      //  var response = client.Execute(new RestRequest());
+      //  var result = JsonConvert.DeserializeObject<ResultViewModel>(response.Content);
+      //  return result;
 
-      } else if (!String.IsNullOrEmpty(city))
-      {
-        var client = new RestClient("https://localhost:7108/CurrentAndDailyForcast/byCityProvince?cityName=" + city + "&provinceName=" + province);
-        var response = client.Execute(new RestRequest());
-        var result = JsonConvert.DeserializeObject<ResultViewModel>(response.Content);
-        return result;
-      }
-      else
-      {
-        throw new Exception("Invalid Input Data");
-      }
+      //} else if (!String.IsNullOrEmpty(city))
+      //{
+      //  var client = new RestClient("https://localhost:7108/CurrentAndDailyForcast/byCityProvince?cityName=" + city + "&provinceName=" + province);
+      //  var response = client.Execute(new RestRequest());
+      //  var result = JsonConvert.DeserializeObject<ResultViewModel>(response.Content);
+      //  return result;
+      //}
+      //else
+      //{
+      //  throw new Exception("Invalid Input Data");
+      //}
       // var client = new RestClient("https://andrevoslooweatherapi.azurewebsites.net/CurrentConditions/byCityProvince?city="+ city + "&province="+ province);   
     }
 
