@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WeatherForecast.Models
+﻿namespace WeatherAPI.Model
 {
-  public class ResultViewModel
+  public class CurrentAndDailyForcast
   {
     public string Key { get; set; }
     public string City { get; set; }
     public string Province { get; set; }
     public string Country { get; set; }
+
   }
 }

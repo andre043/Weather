@@ -21,7 +21,9 @@
     <tr>
       <td>
         <strong>City: </strong>
+        <span id="lblKey"></span>  ,
         <span id="lblCity"></span>  ,
+        <span id="lblProvince"></span>  ,
         <span id="lblCountry"></span>
       </td>
     </tr>
@@ -64,8 +66,11 @@
           url: '@Url.Action("GetCall", "Home")',
           data: { city: cityname, province: provincename },
           success: function (data) {
-              alert("Success");
-              alert(data);
+              console.log(data);
+              $("#lblKey").text(data.City);
+              $("#lblCity").html(data.City);
+              $("#lblProvince").text(data.City);
+              $("#lblCountry").text(data.Country);
           },
           error: function (data) {
               alert("Failure");
