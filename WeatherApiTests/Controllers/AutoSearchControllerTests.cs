@@ -36,5 +36,26 @@ namespace WeatherApiTests.Controllers
       Assert.AreEqual("Alberton", area?.LocalizedName);
       Assert.AreEqual("Gauteng", area?.AdministrativeArea.LocalizedName);
     }
+
+    [TestMethod()]
+    public void GetByAreaNegativeTest()
+    {
+      var area = autoSearchController.GetAutoCompleteSearchByCityProvince("", "");
+      Assert.IsNull(area?.LocalizedName);
+    }
+
+    [TestMethod()]
+    public void GetByAreaNegativeNoCityTest()
+    {
+      var area = autoSearchController.GetAutoCompleteSearchByCityProvince("", "Gauteng");
+      Assert.IsNull(area?.LocalizedName);
+    }
+
+    [TestMethod()]
+    public void GetByAreaNegativeNoProvinceTest()
+    {
+      var area = autoSearchController.GetAutoCompleteSearchByCityProvince("Alberton", "");
+      Assert.IsNull(area?.LocalizedName);
+    }
   }
 }
