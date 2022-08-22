@@ -2,129 +2,72 @@
 using WeatherAPI.Model;
 using Newtonsoft.Json;
 using Accuweather.Current;
+using System.Net;
+using WeatherAPI.Helpers;
 
 namespace WeatherAPI.Controllers
 {
   [ApiController]
-  [Route("[controller]")]
+  [Route("api/[controller]")]
   public class CurrentAndDailyForcastController : ControllerBase
   {
     private Accuweather.AccuweatherApi _accuweatherApi;
     private readonly ILogger<CurrentAndDailyForcastController> _logger;
+    private ResponseBase _responseBase;
 
     public CurrentAndDailyForcastController(ILogger<CurrentAndDailyForcastController> logger)
     {
+      _responseBase = new ResponseBase();
       _logger = logger;
       _accuweatherApi = new Accuweather.AccuweatherApi("X9R2u82JUWAlaYh9MAGP8hWGmCWIWv6l");
     }
 
-    [HttpGet("byCity")]
-    public CurrentAndDailyForcast GetAutoCompleteSearchByCity(string cityName)
+    /// <summary>
+    /// Searches and returns weather forcast for city name. Will return results for first city found.
+    /// </summary>
+    /// <param name="city">City Name</param>
+    /// <returns></returns>
+    [HttpGet("byCityProvinceCountry")]
+    public ResponseBase GetCurrentAndDailyForcast(string city, string? province, string? country)
     {
-      List<Cities> cities = new List<Cities>();
-      CurrentAndDailyForcast currentAndDailyForcast = new CurrentAndDailyForcast(); 
-      var data = _accuweatherApi.Locations.AutoCompleteSearch(cityName).Result;
-
-      if (data != null)
+      try
       {
-        var citiesData = JsonConvert.DeserializeObject<CitiesResult>(data);
-        cities = JsonConvert.DeserializeObject<List<Cities>>(citiesData.Data);
+        CurrentAndDailyForcast currentAndDailyForcast = new CurrentAndDailyForcast();
+        _responseBase.Data = new CurrentAndDailyForcast();
+
+        //Helper class to minimize duplicate code. 
+        CityHelper cityHelper = new CityHelper(_accuweatherApi);
+        List<Cities> cities = cityHelper.GetCities(city);
+
+        if (cities is null)
+        {
+          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
+          _responseBase.Message = $"No city was found for {city}.";
+          return _responseBase;
+        }
+
+        //Get one city from list to work with. 
+        Cities cityDetails = new Cities();
+        cityDetails = cityHelper.GetSpecificCity(cities,city,province, country);
+
+        //Helper class to minimize duplicate code. 
+        CurrentAndDailyForcastHelper currentAndDailyForcastHelper = new CurrentAndDailyForcastHelper(_accuweatherApi);
+        currentAndDailyForcast = currentAndDailyForcastHelper.PopulateCityDetails(cityDetails);
+        currentAndDailyForcast.Forcast = currentAndDailyForcastHelper.GetForcast(Convert.ToInt32(cityDetails.Key));
+
+        //Can assume postive data if the above runs successfully, error handeling in helper classes. 
+        _responseBase.HttpStatusCode = HttpStatusCode.OK;
+        _responseBase.Message = "Success";
+        _responseBase.Data = currentAndDailyForcast;
+        return _responseBase;
       }
-
-      var result = cities.FirstOrDefault();
-
-      currentAndDailyForcast.Key = result.Key;
-      currentAndDailyForcast.City = result.LocalizedName;
-      currentAndDailyForcast.Province = result.AdministrativeArea.LocalizedName;
-      currentAndDailyForcast.Country = result.Country.LocalizedName;
-
-      DailyForecastsRoot dailyForecastsRoot = new DailyForecastsRoot();
-      data = _accuweatherApi.Forecast.FiveDaysOfDailyForecasts(Convert.ToInt32(result.Key), true, true).Result;
-
-      if (data != null)
+      catch (Exception e)
       {
-        var currentConditionsResultResult = JsonConvert.DeserializeObject<DailyForecastsResult>(data);
-        dailyForecastsRoot = JsonConvert.DeserializeObject<DailyForecastsRoot>(currentConditionsResultResult.Data);
+        _responseBase.HttpStatusCode = HttpStatusCode.InternalServerError;
+        _responseBase.Message = e.Message;
+        _logger.LogCritical(e, e.Message);
+        return _responseBase;
       }
-
-      currentAndDailyForcast.Forcast = new List<Forcast>();
-
-      var dailyForcast = dailyForecastsRoot.DailyForecasts.FirstOrDefault(); 
-
-        Forcast forcast = new Forcast();
-        forcast.Sun = dailyForcast.Sun;
-        forcast.Moon = dailyForcast.Moon;
-        forcast.Date = dailyForcast.Date;
-        forcast.RealFeelTemperature = dailyForcast.RealFeelTemperature;
-        forcast.Temperature = dailyForcast.Temperature;
-        forcast.ShortPhrase = dailyForcast.Day.ShortPhrase;
-        currentAndDailyForcast.Forcast.Add(forcast);
-      
-
-      //foreach (var dailyForcast in dailyForecastsRoot.DailyForecasts)
-      //{
-      //  Forcast forcast = new Forcast();
-      //  forcast.Sun = dailyForcast.Sun;        
-      //  forcast.Moon = dailyForcast.Moon;
-      //  forcast.Date = dailyForcast.Date;     
-      //  forcast.RealFeelTemperature = dailyForcast.RealFeelTemperature;        
-      //  forcast.Temperature = dailyForcast.Temperature;
-      //  forcast.ShortPhrase = dailyForcast.Day.ShortPhrase;
-      //  currentAndDailyForcast.Forcast.Add(forcast); 
-      //}
-
-
-
-      return currentAndDailyForcast;
     }
-
-    //TODO: Complete Below to match top. 
-
-    //[HttpGet("byCityProvince")]
-    //public CurrentAndDailyForcast GetAutoCompleteSearchByCityProvince(string cityName, string provinceName)
-    //{
-    //  List<Cities> cities = new List<Cities>();
-    //  CurrentAndDailyForcast currentAndDailyForcast = new CurrentAndDailyForcast();
-    //  var data = _accuweatherApi.Locations.AutoCompleteSearch(cityName).Result;
-
-    //  if (data != null)
-    //  {
-    //    var citiesData = JsonConvert.DeserializeObject<CitiesResult>(data);
-    //    cities = JsonConvert.DeserializeObject<List<Cities>>(citiesData.Data);
-    //  }
-
-    //  var result = cities.FirstOrDefault(c => c.AdministrativeArea.LocalizedName.Equals(provinceName, StringComparison.InvariantCultureIgnoreCase));
-
-    //  currentAndDailyForcast.Key = result.Key;
-    //  currentAndDailyForcast.City = result.LocalizedName;
-    //  currentAndDailyForcast.Province = result.AdministrativeArea.LocalizedName;
-    //  currentAndDailyForcast.Country = result.Country.LocalizedName;
-
-    //  return currentAndDailyForcast;
-    //}
-
-
-    //[HttpGet("byCityCountry")]
-    //public CurrentAndDailyForcast GetAutoCompleteSearchByCityCountry(string cityName, string countryName)
-    //{
-    //  List<Cities> cities = new List<Cities>();
-    //  CurrentAndDailyForcast currentAndDailyForcast = new CurrentAndDailyForcast();
-    //  var data = _accuweatherApi.Locations.AutoCompleteSearch(cityName).Result;
-
-    //  if (data != null)
-    //  {
-    //    var citiesData = JsonConvert.DeserializeObject<CitiesResult>(data);
-    //    cities = JsonConvert.DeserializeObject<List<Cities>>(citiesData.Data);
-    //  }
-
-    //  var result = cities.FirstOrDefault(c => c.Country.LocalizedName.Equals(countryName, StringComparison.InvariantCultureIgnoreCase));
-
-    //  currentAndDailyForcast.Key = result.Key;
-    //  currentAndDailyForcast.City = result.LocalizedName;
-    //  currentAndDailyForcast.Province = result.AdministrativeArea.LocalizedName;
-    //  currentAndDailyForcast.Country = result.Country.LocalizedName;
-
-    //  return currentAndDailyForcast;
-    //}
   }
 }

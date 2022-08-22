@@ -54,8 +54,10 @@
           type: "GET",
           url: '@Url.Action("GetCall", "Home")',
           data: { city: cityname, province: provincename },
-          success: function (data) {
-            debugger; 
+          success: function (dataResult) {
+            debugger;
+              var data = JSON.stringify(dataResult.data);
+
               $("#lblKey").text(data.key);
               $("#lblCity").text(data.city);
               $("#lblProvince").text(data.province);

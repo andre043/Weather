@@ -2,49 +2,90 @@
 using WeatherAPI.Model;
 using Newtonsoft.Json;
 using Accuweather.Current;
+using System.Net;
+using WeatherAPI.Helpers;
 
 namespace WeatherAPI.Controllers
 {
   [ApiController]
-  [Route("/[controller]")]
+  [Route("api/[controller]")]
   public class DailyForecastsController : ControllerBase
   {
     private Accuweather.AccuweatherApi _accuweatherApi;
     private readonly ILogger<DailyForecastsController> _logger;
+    private ResponseBase _responseBase;
 
     public DailyForecastsController(ILogger<DailyForecastsController> logger)
     {
+      _responseBase = new ResponseBase();
       _logger = logger;
       _accuweatherApi = new Accuweather.AccuweatherApi("X9R2u82JUWAlaYh9MAGP8hWGmCWIWv6l");
     }
 
-    [HttpGet("byCityProvince")]
-    public DailyForecastsRoot Get(string city, string province)
+    [HttpGet("byCityProvinceCountry")]
+    public ResponseBase Get(string city, string? province, string? country)
     {
-      List<Cities> cities = new List<Cities>();
-      var data = _accuweatherApi.Locations.AutoCompleteSearch(city).Result;
-
-      if (data != null)
+      try
       {
-        var citiesData = JsonConvert.DeserializeObject<CitiesResult>(data);
+        _responseBase.Data = new DailyForecastsRoot();
 
-        cities = JsonConvert.DeserializeObject<List<Cities>>(citiesData.Data);
+        //Helper class to minimize duplicate code. 
+        CityHelper cityHelper = new CityHelper(_accuweatherApi);
+        List<Cities> cities = cityHelper.GetCities(city);
+
+        if (cities is null)
+        {
+          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
+          _responseBase.Message = $"No city was found for {city}.";
+          return _responseBase;
+        }
+
+        //Get one city from list to work with. 
+        Cities cityDetails = new Cities();
+        cityDetails = cityHelper.GetSpecificCity(cities, city, province, country);
+
+        DailyForecastsRoot dailyForecastsRoot = new DailyForecastsRoot();
+        var data = _accuweatherApi.Forecast.FiveDaysOfDailyForecasts(Convert.ToInt32(cityDetails.Key), true, true).Result;
+
+        if (data != null)
+        {
+          var currentConditionsResultResult = JsonConvert.DeserializeObject<DailyForecastsResult>(data);
+
+          if (currentConditionsResultResult.Data is null)
+          {
+            _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
+            _responseBase.Message = $"No Result.data returned {city} from Acc API.";
+            return _responseBase;
+          }
+          dailyForecastsRoot = JsonConvert.DeserializeObject<DailyForecastsRoot>(currentConditionsResultResult.Data);
+        }
+        else
+        {
+          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
+          _responseBase.Message = $"Couldn't get current conidtions result for {city}.";
+          return _responseBase;
+        }
+
+        if (dailyForecastsRoot is null)
+        {
+          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
+          _responseBase.Message = $"No current conditions returned for {city}.";
+          return _responseBase;
+        }
+
+        //Can assume postive data if the above runs successfully, error handeling in helper classes. 
+        _responseBase.HttpStatusCode = HttpStatusCode.OK;
+        _responseBase.Message = "Success";
+        _responseBase.Data = dailyForecastsRoot;
+        return _responseBase;
       }
-
-      string keyId = cities.FirstOrDefault(c => c.AdministrativeArea.LocalizedName.Equals(province, StringComparison.InvariantCultureIgnoreCase)).Key;
-
-
-      DailyForecastsRoot dailyForecastsRoot = new DailyForecastsRoot();
-      data = _accuweatherApi.Forecast.FiveDaysOfDailyForecasts(Convert.ToInt32(keyId), true, true).Result;
-
-
-      if (data != null)
+      catch (Exception e)
       {
-        var currentConditionsResultResult = JsonConvert.DeserializeObject<DailyForecastsResult>(data);
-        dailyForecastsRoot = JsonConvert.DeserializeObject<DailyForecastsRoot>(currentConditionsResultResult.Data);
+        _responseBase.HttpStatusCode = HttpStatusCode.InternalServerError;
+        _responseBase.Message = e.Message;
+        _logger.LogCritical(e, e.Message);
+        return _responseBase;
       }
-
-      return dailyForecastsRoot;
     }
   }
 }
