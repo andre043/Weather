@@ -16,35 +16,33 @@
   <h2>Weather Forecast</h2>
   <table>
     <tr>
-      <td>Weather Symbol Icon <img id="imgWeatherIconUrl" src="" title="Weather Icon" /></td>
-    </tr>
-    <tr>
       <td>
         <strong>City: </strong>
-        <span id="lblKey"></span>  ,
         <span id="lblCity"></span>  ,
         <span id="lblProvince"></span>  ,
         <span id="lblCountry"></span>
       </td>
     </tr>
     <tr>
+      <strong>City Key: </strong>
+      <label id="lblKey"></label>
+    </tr>
+    <tr>
       <td>
         <strong>Description:</strong>
         <label id="lblDescription"></label><br />
-        <strong>Humidity:</strong>
-        <label id="lblHumidity"></label>
+        <strong>Date:</strong>
+        <label id="lblDate"></label>
       </td>
     </tr>
     <tr>
       <td>
-        Temperature (Feels Like)<label id="lblTempFeelsLike"></label><br />
-        Temperature <label id="lblTemp"></label><br />
-        Temperature (Min)<label id="lblTempMin"></label><br />
-        Temperature (Max)<label id="lblTempMax"></label><br />
+        <strong>Temperature (Min):</strong><label id="lblTempMin"></label><br />
+        <strong>Temperature (Max):</strong><label id="lblTempMax"></label><br />
+        <strong>Real Feel Temperature (Min):</strong><label id="lblRealFeelTemperatureMin"></label><br />
+        <strong>Real Feel Temperature (Max):</strong><label id="lblRealFeelTemperatureMax"></label><br />
       </td>
     </tr>
-
-
   </table>
 </div>
 
@@ -57,12 +55,21 @@
           url: '@Url.Action("GetCall", "Home")',
           data: { city: cityname, province: provincename },
           success: function (data) {
-              alert(data);
-              console.log(data);
-              $("#lblKey").text(data.City);
-              $("#lblCity").html(data.City);
-              $("#lblProvince").text(data.City);
-              $("#lblCountry").text(data.Country);
+            debugger; 
+              $("#lblKey").text(data.key);
+              $("#lblCity").text(data.city);
+              $("#lblProvince").text(data.province);
+              $("#lblCountry").text(data.country);
+
+              for (var i = 0; i < data.forcast.length; i++) {
+                  $("#lblDescription").text(data.forcast[i].shortPhrase);
+                  $("#lblDate").text(data.forcast[i].date);
+
+                  $("#lblTempMin").text(data.forcast[i].temperature.minimum.value + ' ' + data.forcast[i].temperature.minimum.unit);
+                  $("#lblTempMax").text(data.forcast[i].temperature.maximum.value + ' ' + data.forcast[i].temperature.maximum.unit);
+                  $("#lblRealFeelTemperatureMin").text(data.forcast[i].realFeelTemperature.minimum.value + ' ' + data.forcast[i].realFeelTemperature.minimum.unit);
+                  $("#lblRealFeelTemperatureMax").text(data.forcast[i].realFeelTemperature.maximum.value + ' ' + data.forcast[i].realFeelTemperature.maximum.unit);
+              }
           },
           error: function (data) {
               alert("Failure");

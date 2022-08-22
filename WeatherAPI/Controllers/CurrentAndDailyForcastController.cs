@@ -49,8 +49,8 @@ namespace WeatherAPI.Controllers
 
       currentAndDailyForcast.Forcast = new List<Forcast>();
 
-      foreach (var dailyForcast in dailyForecastsRoot.DailyForecasts)
-      {
+      var dailyForcast = dailyForecastsRoot.DailyForecasts.FirstOrDefault(); 
+
         Forcast forcast = new Forcast();
         forcast.Sun = dailyForcast.Sun;
         forcast.Moon = dailyForcast.Moon;
@@ -58,8 +58,23 @@ namespace WeatherAPI.Controllers
         forcast.RealFeelTemperature = dailyForcast.RealFeelTemperature;
         forcast.Temperature = dailyForcast.Temperature;
         forcast.ShortPhrase = dailyForcast.Day.ShortPhrase;
-        currentAndDailyForcast.Forcast.Add(forcast); 
-      }
+        currentAndDailyForcast.Forcast.Add(forcast);
+      
+
+      //foreach (var dailyForcast in dailyForecastsRoot.DailyForecasts)
+      //{
+      //  Forcast forcast = new Forcast();
+      //  forcast.Sun = dailyForcast.Sun;        
+      //  forcast.Moon = dailyForcast.Moon;
+      //  forcast.Date = dailyForcast.Date;     
+      //  forcast.RealFeelTemperature = dailyForcast.RealFeelTemperature;        
+      //  forcast.Temperature = dailyForcast.Temperature;
+      //  forcast.ShortPhrase = dailyForcast.Day.ShortPhrase;
+      //  currentAndDailyForcast.Forcast.Add(forcast); 
+      //}
+
+
+
       return currentAndDailyForcast;
     }
 

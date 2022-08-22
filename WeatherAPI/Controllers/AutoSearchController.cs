@@ -2,6 +2,11 @@
 using WeatherAPI.Model;
 using Newtonsoft.Json;
 using Accuweather.Current;
+using Microsoft.AspNetCore.Server.IIS.Core;
+using System.Net;
+using System.Web;
+using System.Net.Http;
+
 
 namespace WeatherAPI.Controllers
 {
@@ -11,6 +16,8 @@ namespace WeatherAPI.Controllers
   {
     private Accuweather.AccuweatherApi _accuweatherApi;
     private readonly ILogger<AutoSearchController> _logger;
+    private ResponseBase _responseBase { get; }
+
 
     public AutoSearchController(ILogger<AutoSearchController> logger)
     {
@@ -18,12 +25,14 @@ namespace WeatherAPI.Controllers
       _accuweatherApi = new Accuweather.AccuweatherApi("X9R2u82JUWAlaYh9MAGP8hWGmCWIWv6l");
     }
 
-    [HttpGet("byCityName")]
-    public List<Cities> GetAutoCompleteSearch(string city)
+    [HttpGet("byCity")]
+    public ResponseBase GetAutoCompleteSearch(string city)
     {
       try
       {
         List<Cities> cities = new List<Cities>();
+        _responseBase.Data = new List<Cities>();
+
         var data = _accuweatherApi.Locations.AutoCompleteSearch(city).Result;
 
         if (data != null)
@@ -32,18 +41,30 @@ namespace WeatherAPI.Controllers
 
           cities = JsonConvert.DeserializeObject<List<Cities>>(citiesData.Data);
         }
-        return cities;
+        else
+        {
+          _responseBase.HttpStatusCode = HttpStatusCode.InternalServerError;
+          _responseBase.Message = "Server Error";
+          return _responseBase;
+        }
+
+        if (cities.Count == 0)
+        {
+          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
+          _responseBase.Message = "Invalid City";
+          return _responseBase; 
+        }
+        _responseBase.HttpStatusCode = HttpStatusCode.Accepted;
+        _responseBase.Message = "Success";
+        _responseBase.Data = cities; 
+
+        return _responseBase;
       }
       catch (Exception e)
       {
-        //if (e is BadRequestException || e is HttpRequestException || e is TimeoutRejectedException)
-        //{
-        //  // Log exception
-        //}
-        //else
-        //{
-        return null; 
-        //}
+        _responseBase.HttpStatusCode = HttpStatusCode.InternalServerError;
+        _responseBase.Message = e.Message;
+        return _responseBase;
       }
     }
 
