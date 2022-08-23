@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using WeatherAPI.Helpers;
 using WeatherAPI.Model;
 
@@ -26,7 +27,7 @@ namespace WeatherAPI.Controllers
     /// <param name="country">Allows NULLS. Country Name.</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
-    public List<Cities> GetCityDetailsByCityCountry(string city, string? province, string? country)
+    public List<Cities> GetCityDetailsByCityCountry([Required]string city, string? province, string? country)
     {
       try
       {

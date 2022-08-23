@@ -29,72 +29,64 @@ namespace WeatherApiTests.Controllers
     public void GetTest()
     {
       var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", null,null);
-      var result = JsonConvert.DeserializeObject<ResponseBase>(data?.ToString());
-      Assert.AreEqual(result?.HttpStatusCode, HttpStatusCode.OK.ToString());
-      Assert.IsNotNull(result?.Data);
+      var result = JsonConvert.DeserializeObject<List<Cities>>(data?.ToString());
+
     }
 
     [TestMethod()]
     public void GetTestCityProvinceTest()
     {
       var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", "Gauteng", null);
-      var result = JsonConvert.DeserializeObject<ResponseBase>(data?.ToString());
-      Assert.AreEqual(result?.HttpStatusCode, HttpStatusCode.OK.ToString());
-      Assert.IsNotNull(result?.Data); ;
+      var result = JsonConvert.DeserializeObject<List<Cities>>(data?.ToString());
+
     }
 
     [TestMethod()]
     public void GetCityCountryTest()
     {
       var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", null, "South Africa");
-      var result = JsonConvert.DeserializeObject<ResponseBase>(data?.ToString());
-      Assert.AreEqual(result?.HttpStatusCode, HttpStatusCode.OK.ToString());
-      Assert.IsNotNull(result?.Data);
+      var result = JsonConvert.DeserializeObject<List<Cities>>(data?.ToString());
+
     }
 
     [TestMethod()]
     public void GetCityProvinceCountryTest()
     {
       var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", "Gauteng", "South Africa");
-      var result = JsonConvert.DeserializeObject<ResponseBase>(data?.ToString());
-      Assert.AreEqual(result?.HttpStatusCode, HttpStatusCode.OK.ToString());
-      Assert.IsNotNull(result?.Data);
+      var result = JsonConvert.DeserializeObject<List<Cities>>(data?.ToString());
+
     }
 
     [TestMethod()]
     public void GetNoResultsCityProvinceCountryTest()
     {
       var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", "Eastern Cape", "South Africa");
-      var result = JsonConvert.DeserializeObject<ResponseBase>(data?.ToString());
-      Assert.AreEqual(result?.HttpStatusCode, HttpStatusCode.OK.ToString());
-      Assert.IsNull(result?.Data);
+      var result = JsonConvert.DeserializeObject<List<Cities>>(data?.ToString());
+
     }
 
     [TestMethod()]
     public void GetNoResultsProvinceCountryTest()
     {
       var data = cityDetailsController.GetCityDetailsByCityCountry(null, "Gauteng", "South Africa");
-      var result = JsonConvert.DeserializeObject<ResponseBase>(data?.ToString());
-      Assert.AreEqual(result?.HttpStatusCode, HttpStatusCode.OK.ToString());
-      Assert.IsNull(result?.Data);
+      var result = JsonConvert.DeserializeObject<List<Cities>>(data?.ToString());
+
     }
 
     [TestMethod()]
     public void GetNoResultsProvinceTest()
     {
       var data = cityDetailsController.GetCityDetailsByCityCountry(null, "Gauteng", null);
-      var result = JsonConvert.DeserializeObject<ResponseBase>(data?.ToString());
-      Assert.AreEqual(result?.HttpStatusCode, HttpStatusCode.OK.ToString());
-      Assert.IsNull(result?.Data);
+      var result = JsonConvert.DeserializeObject<List<Cities>>(data?.ToString());
+
     }
 
     [TestMethod()]
     public void GetNoResultsCountryTest()
     {
       var data = cityDetailsController.GetCityDetailsByCityCountry(null,null, "South Africa");
-      var result = JsonConvert.DeserializeObject<ResponseBase>(data?.ToString());
-      Assert.AreEqual(result?.HttpStatusCode, HttpStatusCode.OK.ToString());
-      Assert.IsNull(result?.Data);
+      var result = JsonConvert.DeserializeObject<List<Cities>>(data?.ToString());
+
     }
   }
 }

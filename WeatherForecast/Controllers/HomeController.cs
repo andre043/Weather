@@ -25,9 +25,16 @@ namespace WeatherForecast.Controllers
       var response = client.Execute(new RestRequest());
       var result = JsonConvert.DeserializeObject<ResultViewModel>(response.Content);
 
-      result.Forcast = result.Forcast.Where(r => r.Date.Date == date.Date).ToList();
-
-      return result; 
+      if (result is null)
+      {
+        throw new Exception("Failed To Get Results. ");
+      }
+      else
+      {
+        result.Forcast = result.Forcast.Where(r => r.Date.Date == date.Date).ToList();
+        return result;
+      }
+ 
     }
 
   }
