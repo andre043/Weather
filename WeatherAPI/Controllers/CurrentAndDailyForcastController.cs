@@ -13,11 +13,10 @@ namespace WeatherAPI.Controllers
   {
     private Accuweather.AccuweatherApi _accuweatherApi;
     private readonly ILogger<CurrentAndDailyForcastController> _logger;
-    private ResponseBase _responseBase;
+
 
     public CurrentAndDailyForcastController(ILogger<CurrentAndDailyForcastController> logger)
     {
-      _responseBase = new ResponseBase();
       _logger = logger;
       _accuweatherApi = new Accuweather.AccuweatherApi("X9R2u82JUWAlaYh9MAGP8hWGmCWIWv6l");
     }
@@ -28,12 +27,11 @@ namespace WeatherAPI.Controllers
     /// <param name="city">City Name</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
-    public ResponseBase GetCurrentAndDailyForcast(string city, string? province, string? country)
+    public CurrentAndDailyForcast GetCurrentAndDailyForcast(string city, string? province, string? country)
     {
       try
       {
         CurrentAndDailyForcast currentAndDailyForcast = new CurrentAndDailyForcast();
-        _responseBase.Data = new CurrentAndDailyForcast();
 
         //Helper class to minimize duplicate code. 
         CityHelper cityHelper = new CityHelper(_accuweatherApi);
@@ -41,11 +39,9 @@ namespace WeatherAPI.Controllers
 
         if (cities is null)
         {
-          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
-          _responseBase.Message = $"No city was found for {city}.";
-          return _responseBase;
+          throw new Exception( $"No city was found for {city}.");
+       
         }
-
         //Get one city from list to work with. 
         Cities cityDetails = new Cities();
         cityDetails = cityHelper.GetSpecificCity(cities,city,province, country);
@@ -56,17 +52,12 @@ namespace WeatherAPI.Controllers
         currentAndDailyForcast.Forcast = currentAndDailyForcastHelper.GetForcast(Convert.ToInt32(cityDetails.Key));
 
         //Can assume postive data if the above runs successfully, error handeling in helper classes. 
-        _responseBase.HttpStatusCode = HttpStatusCode.OK;
-        _responseBase.Message = "Success";
-        _responseBase.Data = currentAndDailyForcast;
-        return _responseBase;
+        return currentAndDailyForcast;
       }
       catch (Exception e)
       {
-        _responseBase.HttpStatusCode = HttpStatusCode.InternalServerError;
-        _responseBase.Message = e.Message;
         _logger.LogCritical(e, e.Message);
-        return _responseBase;
+        return null;
       }
     }
   }

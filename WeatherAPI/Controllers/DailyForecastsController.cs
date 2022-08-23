@@ -13,21 +13,18 @@ namespace WeatherAPI.Controllers
   {
     private Accuweather.AccuweatherApi _accuweatherApi;
     private readonly ILogger<DailyForecastsController> _logger;
-    private ResponseBase _responseBase;
 
     public DailyForecastsController(ILogger<DailyForecastsController> logger)
     {
-      _responseBase = new ResponseBase();
       _logger = logger;
       _accuweatherApi = new Accuweather.AccuweatherApi("X9R2u82JUWAlaYh9MAGP8hWGmCWIWv6l");
     }
 
     [HttpGet("byCityProvinceCountry")]
-    public ResponseBase Get(string city, string? province, string? country)
+    public DailyForecastsRoot Get(string city, string? province, string? country)
     {
       try
       {
-        _responseBase.Data = new DailyForecastsRoot();
 
         //Helper class to minimize duplicate code. 
         CityHelper cityHelper = new CityHelper(_accuweatherApi);
@@ -35,9 +32,7 @@ namespace WeatherAPI.Controllers
 
         if (cities is null)
         {
-          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
-          _responseBase.Message = $"No city was found for {city}.";
-          return _responseBase;
+          throw new Exception($"No city was found for {city}.");
         }
 
         //Get one city from list to work with. 
@@ -53,38 +48,28 @@ namespace WeatherAPI.Controllers
 
           if (currentConditionsResultResult.Data is null)
           {
-            _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
-            _responseBase.Message = $"No Result.data returned {city} from Acc API.";
-            return _responseBase;
+            throw new Exception($"No Result.data returned {city} from Acc API.");
           }
           dailyForecastsRoot = JsonConvert.DeserializeObject<DailyForecastsRoot>(currentConditionsResultResult.Data);
         }
         else
         {
-          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
-          _responseBase.Message = $"Couldn't get current conidtions result for {city}.";
-          return _responseBase;
+          throw new Exception($"Couldn't get current conidtions result for {city}.");      
         }
 
         if (dailyForecastsRoot is null)
         {
-          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
-          _responseBase.Message = $"No current conditions returned for {city}.";
-          return _responseBase;
+          throw new Exception($"No current conditions returned for {city}.");
+ 
         }
 
         //Can assume postive data if the above runs successfully, error handeling in helper classes. 
-        _responseBase.HttpStatusCode = HttpStatusCode.OK;
-        _responseBase.Message = "Success";
-        _responseBase.Data = dailyForecastsRoot;
-        return _responseBase;
+        return dailyForecastsRoot;
       }
       catch (Exception e)
       {
-        _responseBase.HttpStatusCode = HttpStatusCode.InternalServerError;
-        _responseBase.Message = e.Message;
         _logger.LogCritical(e, e.Message);
-        return _responseBase;
+        return null; 
       }
     }
   }

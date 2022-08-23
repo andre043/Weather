@@ -12,12 +12,10 @@ namespace WeatherAPI.Controllers
   {
     private Accuweather.AccuweatherApi _accuweatherApi;
     private readonly ILogger<CityDetailsController> _logger;
-    private ResponseBase _responseBase;
 
     public CityDetailsController(ILogger<CityDetailsController> logger)
     {
        string apiKey = JsonConfigurationManager.AppSetting["ApiKey"];
-      _responseBase = new ResponseBase();
       _logger = logger;
       _accuweatherApi = new Accuweather.AccuweatherApi(apiKey);
     }
@@ -30,18 +28,15 @@ namespace WeatherAPI.Controllers
     /// <param name="country">Allows NULLS. Country Name.</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
-    public ResponseBase GetCityDetailsByCityCountry(string city,string? province ,string? country)
+    public List<Cities> GetCityDetailsByCityCountry(string city,string? province ,string? country)
     {
       try
       {
         CityHelper cityHelper = new CityHelper(_accuweatherApi);
-        _responseBase.Data = new List<Cities>();
         //Just to double check no rubbish data is thrown. 
         if (String.IsNullOrEmpty(city))
         {
-          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
-          _responseBase.Message = "No Value For City.";
-          return _responseBase;
+          throw new Exception("No Value For City.");
         }
         //Error handeling done inside method. If no error is thrown in method, then at least 1 record will always be returned. 
         var cities = cityHelper.GetCities(city);
@@ -73,23 +68,15 @@ namespace WeatherAPI.Controllers
         //Just to confirm we found a match. User could input an incorrect country or provice,state. 
         if (cityDetail is null)
         {
-          _responseBase.HttpStatusCode = HttpStatusCode.BadRequest;
-          _responseBase.Message = "No City Found For Country.";
-          return _responseBase;
+          throw new Exception("No City Found For Country.");
         }
 
-        _responseBase.Data = cityDetail;
-        _responseBase.HttpStatusCode = HttpStatusCode.OK;
-        _responseBase.Message = "Success";
-
-        return _responseBase;
+        return cityDetail;
       }
       catch (Exception e)
       {
-        _responseBase.HttpStatusCode = HttpStatusCode.InternalServerError;
-        _responseBase.Message = e.InnerException?.ToString();
         _logger.LogCritical(e, e.Message);
-        return _responseBase;
+        return null;       
       }
     }
   }
