@@ -27,9 +27,13 @@ namespace WeatherForecast.Controllers
 
       if (result is null)
       {
-        throw new Exception("Failed To Get Results. ");
+        throw new Exception("Failed To Get Results.");
       }
-      else
+      else if (result.Forcast is null)
+      {
+        throw new Exception("Failed To Get Forcast.");
+      }
+      else 
       {
         result.Forcast = result.Forcast.Where(r => r.Date.Date == date.Date).ToList();
         return result;

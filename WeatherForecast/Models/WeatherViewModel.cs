@@ -27,17 +27,17 @@ namespace WeatherForecast.Models
 
   public class Sun
   {
-    public DateTime Rise { get; set; }
+    public DateTime? Rise { get; set; }
     public int EpochRise { get; set; }
-    public DateTime Set { get; set; }
+    public DateTime? Set { get; set; }
     public int EpochSet { get; set; }
   }
 
   public class Moon
   {
-    public DateTime Rise { get; set; }
+    public DateTime? Rise { get; set; }
     public int EpochRise { get; set; }
-    public DateTime Set { get; set; }
+    public DateTime? Set { get; set; }
     public int EpochSet { get; set; }
     public string Phase { get; set; }
     public int Age { get; set; }

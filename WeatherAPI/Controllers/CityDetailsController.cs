@@ -74,7 +74,7 @@ namespace WeatherAPI.Controllers
       }
       catch (Exception e)
       {
-        _logger.LogCritical(e, e.Message);
+        _logger.LogCritical(e, e.Message,e.InnerException);
         return null;
       }
     }

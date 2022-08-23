@@ -4,14 +4,13 @@
 
 <h1>Get Weather Forecast</h1>
 <div>
-
     <table>
     <tr>
       <td>
           <strong>City Name : </strong>
       </td>
       <td>
-         <input id="txtCity" type="text" />
+         <input id="txtCity" type="text" required/>
       </td>
     </tr>
     <tr>
@@ -40,7 +39,7 @@
     </tr>  
   </table>
   <button id="btnSubmit">Get Forecast</button>
-</div>
+  </div>
 <div>
   <h2>Forecast Details</h2>
   <table>
@@ -110,7 +109,7 @@
               }
           },
           error: function (data) {
-              alert("Failure");
+              alert("Error, Please try again.");
           }
       });
   });
