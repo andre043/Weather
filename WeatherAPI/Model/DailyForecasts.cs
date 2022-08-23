@@ -171,19 +171,6 @@
     public string Unit { get; set; }
     public int UnitType { get; set; }
   }
-
-  public class RealFeelTemperature
-  {
-    public Minimum Minimum { get; set; }
-    public Maximum Maximum { get; set; }
-  }
-
-  public class RealFeelTemperatureShade
-  {
-    public Minimum Minimum { get; set; }
-    public Maximum Maximum { get; set; }
-  }
-
   public class Snow
   {
     public double Value { get; set; }
@@ -212,13 +199,6 @@
     public DateTime Set { get; set; }
     public int EpochSet { get; set; }
   }
-
-  public class Temperature
-  {
-    public Minimum Minimum { get; set; }
-    public Maximum Maximum { get; set; }
-  }
-
   public class TotalLiquid
   {
     public double Value { get; set; }

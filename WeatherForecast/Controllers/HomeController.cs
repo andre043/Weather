@@ -18,11 +18,14 @@ namespace WeatherForecast.Controllers
       return View();
     }
 
-    public ActionResult<ResultViewModel> GetCall(string city, string province, string country)
+    public ActionResult<ResultViewModel> GetCall(string city, string province, string country, DateTime date)
     {
       var client = new RestClient("https://localhost:7108/api/CurrentAndDailyForcast/byCity?cityName="+city);
       var response = client.Execute(new RestRequest());
       var result = JsonConvert.DeserializeObject<ResultViewModel>(response.Content);
+
+      result.Forcast = result.Forcast.Where(r => r.Date.Date == date.Date).ToList();
+
       return result; 
     }
 

@@ -64,6 +64,7 @@ namespace WeatherAPI.Helpers
         foreach (var dailyForcast in dailyForecastsRoot.DailyForecasts)
         {
           Forcast forcast = new Forcast();
+          forcast.Link = dailyForcast.Link;
           forcast.Sun = dailyForcast.Sun;
           forcast.Moon = dailyForcast.Moon;
           forcast.Date = dailyForcast.Date;

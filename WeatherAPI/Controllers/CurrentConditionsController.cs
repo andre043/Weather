@@ -15,8 +15,9 @@ namespace WeatherAPI.Controllers
 
     public CurrentConditionsController(ILogger<CurrentConditionsController> logger)
     {
+      string apiKey = JsonConfigurationManager.AppSetting["ApiKey"];
       _logger = logger;
-      _accuweatherApi = new Accuweather.AccuweatherApi("X9R2u82JUWAlaYh9MAGP8hWGmCWIWv6l");
+      _accuweatherApi = new Accuweather.AccuweatherApi(apiKey);
     }
 
     [HttpGet("byCityProvinceCountry")]

@@ -190,15 +190,32 @@
     public Minimum Minimum { get; set; }
     public Maximum Maximum { get; set; }
   }
-
   public class Minimum
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public double Value { get; set; }
+    public string Unit { get; set; }
+    public int UnitType { get; set; }
   }
   public class Maximum
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public double Value { get; set; }
+    public string Unit { get; set; }
+    public int UnitType { get; set; }
+  }
+  public class Temperature
+  {
+    public Minimum Minimum { get; set; }
+    public Maximum Maximum { get; set; }
+  }
+
+  public class RealFeelTemperatureShade
+  {
+    public Minimum Minimum { get; set; }
+    public Maximum Maximum { get; set; }
+  }
+  public class RealFeelTemperature
+  {
+    public Minimum Minimum { get; set; }
+    public Maximum Maximum { get; set; }
   }
 }
