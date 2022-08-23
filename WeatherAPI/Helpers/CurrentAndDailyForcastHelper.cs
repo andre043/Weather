@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Newtonsoft.Json;
 using WeatherAPI.Model;
-using Newtonsoft.Json;
-using Accuweather.Current;
-using System.Net;
 
 namespace WeatherAPI.Helpers
 {
@@ -24,11 +21,11 @@ namespace WeatherAPI.Helpers
         currentAndDailyForcast.City = city.LocalizedName;
         currentAndDailyForcast.Province = city.AdministrativeArea.LocalizedName;
         currentAndDailyForcast.Country = city.Country.LocalizedName;
-        return currentAndDailyForcast; 
+        return currentAndDailyForcast;
       }
       catch (Exception e)
       {
-        throw new Exception("CurrentAndDailyForcastHelper.PopulateCityDetails failed.",e);
+        throw new Exception("CurrentAndDailyForcastHelper.PopulateCityDetails failed.", e);
       }
     }
 
@@ -80,7 +77,7 @@ namespace WeatherAPI.Helpers
       }
       catch (Exception e)
       {
-        throw new Exception("CurrentAndDailyForcastHelper.GetForcast failed with",e);
+        throw new Exception("CurrentAndDailyForcastHelper.GetForcast failed with", e);
       }
     }
   }

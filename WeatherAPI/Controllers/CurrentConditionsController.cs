@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WeatherAPI.Model;
 using Newtonsoft.Json;
-using Accuweather.Current;
-using System.Net;
 using WeatherAPI.Helpers;
+using WeatherAPI.Model;
 
 namespace WeatherAPI.Controllers
 {
@@ -22,11 +20,11 @@ namespace WeatherAPI.Controllers
     }
 
     [HttpGet("byCityProvinceCountry")]
-    public List<CurrentCondition> Get(string city,string? province, string? country)
+    public List<CurrentCondition> Get(string city, string? province, string? country)
     {
       try
       {
-       //Helper class to minimize duplicate code. 
+        //Helper class to minimize duplicate code. 
         CityHelper cityHelper = new CityHelper(_accuweatherApi);
         List<Cities> cities = cityHelper.GetCities(city);
 
@@ -50,14 +48,14 @@ namespace WeatherAPI.Controllers
           if (currentConditionsResultResult.Data is null)
           {
             throw new Exception($"No Result.data returned {city} from Acc API.");
-      
+
           }
           currentCondition = JsonConvert.DeserializeObject<List<CurrentCondition>>(currentConditionsResultResult.Data);
         }
         else
         {
           throw new Exception($"Couldn't get forcast result for {city}.");
-      
+
         }
 
         if (currentCondition is null)
@@ -71,7 +69,7 @@ namespace WeatherAPI.Controllers
       {
         _logger.LogCritical(e, e.Message);
         return null;
-      }     
+      }
     }
   }
 }

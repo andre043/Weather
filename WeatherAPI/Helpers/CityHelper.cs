@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Newtonsoft.Json;
 using WeatherAPI.Model;
-using Newtonsoft.Json;
-using Accuweather.Current;
-using System.Net;
-using Accuweather;
-using System;
-using System.Diagnostics.Metrics;
 
 
 namespace WeatherAPI.Helpers
@@ -56,10 +50,10 @@ namespace WeatherAPI.Helpers
       }
       catch (Exception e)
       {
-        throw new Exception("CityHelper.GetCities failed. See exception for more details.",e);
+        throw new Exception("CityHelper.GetCities failed. See exception for more details.", e);
       }
     }
-    
+
     public Cities GetSpecificCity(List<Cities> cities, string city, string? province, string? country)
     {
       try
@@ -92,13 +86,13 @@ namespace WeatherAPI.Helpers
         {
           throw new Exception($"Failed To Get City with the following details City {city}, Provice/State {province}, Country {country}.");
         }
-        return cityDetail; 
+        return cityDetail;
 
       }
       catch (Exception e)
       {
         throw new Exception("CityHelper.GetSpecificCity failed. See exception for more details.", e);
       }
-    }  
+    }
   }
 }

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WeatherAPI.Model;
-using Newtonsoft.Json;
-using System.Net;
 using WeatherAPI.Helpers;
+using WeatherAPI.Model;
 
 namespace WeatherAPI.Controllers
 {
@@ -15,7 +13,7 @@ namespace WeatherAPI.Controllers
 
     public CityDetailsController(ILogger<CityDetailsController> logger)
     {
-       string apiKey = JsonConfigurationManager.AppSetting["ApiKey"];
+      string apiKey = JsonConfigurationManager.AppSetting["ApiKey"];
       _logger = logger;
       _accuweatherApi = new Accuweather.AccuweatherApi(apiKey);
     }
@@ -28,7 +26,7 @@ namespace WeatherAPI.Controllers
     /// <param name="country">Allows NULLS. Country Name.</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
-    public List<Cities> GetCityDetailsByCityCountry(string city,string? province ,string? country)
+    public List<Cities> GetCityDetailsByCityCountry(string city, string? province, string? country)
     {
       try
       {
@@ -42,7 +40,7 @@ namespace WeatherAPI.Controllers
         var cities = cityHelper.GetCities(city);
 
         //Ignore Variant and Culture to eliminate some possible bugs. 
-        List<Cities> cityDetail = new List<Cities>(); 
+        List<Cities> cityDetail = new List<Cities>();
 
         //Country, province and city is populated, therefor result should return one result. 
         if (!String.IsNullOrEmpty(province) && !String.IsNullOrEmpty(country))
@@ -60,11 +58,11 @@ namespace WeatherAPI.Controllers
           cityDetail = cities.Where(c => c.Country.LocalizedName.Equals(country, StringComparison.InvariantCultureIgnoreCase)).ToList();
         }
         //Only city is populated. 
-        else 
+        else
         {
           cityDetail.Add(cities.FirstOrDefault());
         }
-  
+
         //Just to confirm we found a match. User could input an incorrect country or provice,state. 
         if (cityDetail is null)
         {
@@ -76,7 +74,7 @@ namespace WeatherAPI.Controllers
       catch (Exception e)
       {
         _logger.LogCritical(e, e.Message);
-        return null;       
+        return null;
       }
     }
   }

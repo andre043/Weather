@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WeatherAPI.Model;
-using Newtonsoft.Json;
-using Accuweather.Current;
-using System.Net;
 using WeatherAPI.Helpers;
+using WeatherAPI.Model;
 
 namespace WeatherAPI.Controllers
 {
@@ -39,12 +36,12 @@ namespace WeatherAPI.Controllers
 
         if (cities is null)
         {
-          throw new Exception( $"No city was found for {city}.");
-       
+          throw new Exception($"No city was found for {city}.");
+
         }
         //Get one city from list to work with. 
         Cities cityDetails = new Cities();
-        cityDetails = cityHelper.GetSpecificCity(cities,city,province, country);
+        cityDetails = cityHelper.GetSpecificCity(cities, city, province, country);
 
         //Helper class to minimize duplicate code. 
         CurrentAndDailyForcastHelper currentAndDailyForcastHelper = new CurrentAndDailyForcastHelper(_accuweatherApi);

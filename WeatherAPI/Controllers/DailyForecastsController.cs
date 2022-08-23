@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WeatherAPI.Model;
 using Newtonsoft.Json;
-using Accuweather.Current;
-using System.Net;
 using WeatherAPI.Helpers;
+using WeatherAPI.Model;
 
 namespace WeatherAPI.Controllers
 {
@@ -54,13 +52,13 @@ namespace WeatherAPI.Controllers
         }
         else
         {
-          throw new Exception($"Couldn't get current conidtions result for {city}.");      
+          throw new Exception($"Couldn't get current conidtions result for {city}.");
         }
 
         if (dailyForecastsRoot is null)
         {
           throw new Exception($"No current conditions returned for {city}.");
- 
+
         }
 
         //Can assume postive data if the above runs successfully, error handeling in helper classes. 
@@ -69,7 +67,7 @@ namespace WeatherAPI.Controllers
       catch (Exception e)
       {
         _logger.LogCritical(e, e.Message);
-        return null; 
+        return null;
       }
     }
   }
