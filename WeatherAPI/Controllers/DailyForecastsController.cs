@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using WeatherAPI.Helpers;
 using WeatherAPI.Model;
 
@@ -20,7 +21,7 @@ namespace WeatherAPI.Controllers
     }
 
     [HttpGet("byCityProvinceCountry")]
-    public DailyForecastsRoot Get(string city, string? province, string? country)
+    public DailyForecastsRoot GetDailyForcasts([Required] string city, string? province, string? country)
     {
       try
       {

@@ -18,7 +18,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetTest()
     {
-      var data = currentConditionsController.Get("Alberton", null,null);
+      var data = currentConditionsController.GetCurrentConditions("Alberton", null,null);
       Assert.IsNotNull(data);
 
     }
@@ -26,49 +26,49 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetTestCityProvinceTest()
     {
-      var data = currentConditionsController.Get("Alberton", "Gauteng", null);
+      var data = currentConditionsController.GetCurrentConditions("Alberton", "Gauteng", null);
       Assert.IsNotNull(data);
     }
 
     [TestMethod()]
     public void GetCityCountryTest()
     {
-      var data = currentConditionsController.Get("Alberton", null, "South Africa");
+      var data = currentConditionsController.GetCurrentConditions("Alberton", null, "South Africa");
       Assert.IsNotNull(data);
     }
 
     [TestMethod()]
     public void GetCityProvinceCountryTest()
     {
-      var data = currentConditionsController.Get("Alberton", "Gauteng", "South Africa");
+      var data = currentConditionsController.GetCurrentConditions("Alberton", "Gauteng", "South Africa");
       Assert.IsNotNull(data);
     }
 
     [TestMethod()]
     public void GetNoResultsCityProvinceCountryTest()
     {
-      var data = currentConditionsController.Get("Alberton", "Eastern Cape", "South Africa");
+      var data = currentConditionsController.GetCurrentConditions("Alberton", "Eastern Cape", "South Africa");
       Assert.AreEqual(data,null);
     }
 
     [TestMethod()]
     public void GetNoResultsProvinceCountryTest()
     {
-      var data = currentConditionsController.Get(null, "Gauteng", "South Africa");
+      var data = currentConditionsController.GetCurrentConditions(null, "Gauteng", "South Africa");
       Assert.AreEqual(data, null);
     }
 
     [TestMethod()]
     public void GetNoResultsProvinceTest()
     {
-      var data = currentConditionsController.Get(null, "Gauteng", null);
+      var data = currentConditionsController.GetCurrentConditions(null, "Gauteng", null);
       Assert.AreEqual(data, null);
     }
 
     [TestMethod()]
     public void GetNoResultsCountryTest()
     {
-      var data = currentConditionsController.Get(null,null, "South Africa");
+      var data = currentConditionsController.GetCurrentConditions(null,null, "South Africa");
       Assert.AreEqual(data, null);
     }
   }

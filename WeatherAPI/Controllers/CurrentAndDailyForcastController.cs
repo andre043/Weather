@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using WeatherAPI.Helpers;
 using WeatherAPI.Model;
 
@@ -25,7 +26,7 @@ namespace WeatherAPI.Controllers
     /// <param name="city">City Name</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
-    public CurrentAndDailyForcast GetCurrentAndDailyForcast(string city, string? province, string? country)
+    public CurrentAndDailyForcast GetCurrentAndDailyForcast([Required] string city, string? province, string? country)
     {
       try
       {

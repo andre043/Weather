@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using WeatherAPI.Helpers;
 using WeatherAPI.Model;
 
@@ -21,7 +22,7 @@ namespace WeatherAPI.Controllers
     }
 
     [HttpGet("byCityProvinceCountry")]
-    public List<CurrentCondition> Get(string city, string? province, string? country)
+    public List<CurrentCondition> GetCurrentConditions([Required] string city, string? province, string? country)
     {
       try
       {

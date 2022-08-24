@@ -18,7 +18,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetTest()
     {
-      var data = dailyForecastsController.Get("Alberton", null,null);
+      var data = dailyForecastsController.GetDailyForcasts("Alberton", null,null);
       Assert.IsNotNull(data);
       Assert.IsNotNull(data.Headline);
       Assert.IsNotNull(data.DailyForecasts);
@@ -27,7 +27,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetTestCityProvinceTest()
     {
-      var data = dailyForecastsController.Get("Alberton", "Gauteng", null);
+      var data = dailyForecastsController.GetDailyForcasts("Alberton", "Gauteng", null);
       Assert.IsNotNull(data);
       Assert.IsNotNull(data.Headline);
       Assert.IsNotNull(data.DailyForecasts);
@@ -37,7 +37,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetCityCountryTest()
     {
-      var data = dailyForecastsController.Get("Alberton", null, "South Africa");
+      var data = dailyForecastsController.GetDailyForcasts("Alberton", null, "South Africa");
       Assert.IsNotNull(data);
       Assert.IsNotNull(data.Headline);
       Assert.IsNotNull(data.DailyForecasts);
@@ -47,7 +47,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetCityProvinceCountryTest()
     {
-      var data = dailyForecastsController.Get("Alberton", "Gauteng", "South Africa");
+      var data = dailyForecastsController.GetDailyForcasts("Alberton", "Gauteng", "South Africa");
       Assert.IsNotNull(data);
       Assert.IsNotNull(data.Headline);
       Assert.IsNotNull(data.DailyForecasts);
@@ -56,7 +56,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetNoResultsCityProvinceCountryTest()
     {
-      var data = dailyForecastsController.Get("Alberton", "Eastern Cape", "South Africa");
+      var data = dailyForecastsController.GetDailyForcasts("Alberton", "Eastern Cape", "South Africa");
       Assert.IsNull(data);
       Assert.IsNull(data.Headline);
       Assert.IsNull(data.DailyForecasts);
@@ -65,7 +65,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetNoResultsProvinceCountryTest()
     {
-      var data = dailyForecastsController.Get(null, "Gauteng", "South Africa");
+      var data = dailyForecastsController.GetDailyForcasts(null, "Gauteng", "South Africa");
       Assert.IsNull(data);
       Assert.IsNull(data.Headline);
       Assert.IsNull(data.DailyForecasts);
@@ -74,7 +74,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetNoResultsProvinceTest()
     {
-      var data = dailyForecastsController.Get(null, "Gauteng", null);
+      var data = dailyForecastsController.GetDailyForcasts(null, "Gauteng", null);
       Assert.IsNull(data);
       Assert.IsNull(data.Headline);
       Assert.IsNull(data.DailyForecasts);
@@ -83,7 +83,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetNoResultsCountryTest()
     {
-      var data = dailyForecastsController.Get(null,null, "South Africa");
+      var data = dailyForecastsController.GetDailyForcasts(null,null, "South Africa");
       Assert.IsNull(data);
       Assert.IsNull(data.Headline);
       Assert.IsNull(data.DailyForecasts); 
