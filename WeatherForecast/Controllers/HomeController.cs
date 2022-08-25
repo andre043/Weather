@@ -20,8 +20,8 @@ namespace WeatherForecast.Controllers
 
     public ActionResult<ResultViewModel> GetCall(string city, string province, string country, DateTime date)
     {
-      var client = new RestClient("https://andrevoslooweatherapi.azurewebsites.net/api/CurrentAndDailyForcast/byCityProvinceCountry?city=" + city + "&province=" + province + "&country=" + country);
-      // var client = new RestClient("https://localhost:7108/api/CurrentAndDailyForcast/byCityProvinceCountry?city="+ city + "&province="+ province + "&country="+country);
+      //var client = new RestClient("https://andrevoslooweatherapi.azurewebsites.net/api/CurrentAndDailyForcast/byCityProvinceCountry?city=" + city + "&province=" + province + "&country=" + country);
+      var client = new RestClient("https://localhost:7108/api/CurrentAndDailyForcast/byCityProvinceCountry?city="+ city + "&province="+ province + "&country="+country);
       var response = client.Execute(new RestRequest());
       var result = JsonConvert.DeserializeObject<ResultViewModel>(response.Content);
 

@@ -1,81 +1,107 @@
 ﻿@{
     ViewData["Title"] = "Weather Forecast";
 }
+
 <link rel="stylesheet" href="https://bootswatch.com/5/cerulean/bootstrap.min.css">
 <div class="col-md-6 mx-auto text-center bg-primary mt-5 p-5 rounded">
-  <h1>Get Weather Forecast</h1>
-  <button id="btnGetForcast">Get Forecast</button>
+   <h1>Get Weather Forecast</h1>
+   <button id="btnGetForcast">Get Forecast</button>
 
-@*  <div class="alert alert-dismissible alert-danger" id="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    <strong>Oh snap!</strong> <a href="#" class="alert-link">Change a few things up</a> and try submitting again.
-  </div>*@
+@*   <div class="alert alert-dismissible alert-danger" id="alert">
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <strong>Oh snap!</strong> <a href="#" class="alert-link">Change a few things up</a> and try submitting again.
+   </div>*@
   
-  <div>
-    <h2 class="text-dark">Forecast Details</h2>
-    <div>
-      <strong>City: </strong>
-      <span id="lblCity"></span>  ,
-      <span id="lblProvince"></span>  ,
-      <span id="lblCountry"></span>
-    </div>
-    <div>
-      <strong>City Key: </strong>
-      <label id="lblKey"></label>
-    </div>
-    <div>
-      <strong>Description: </strong>
-      <label id="lblDescription"></label><br />
-      <strong>Date: </strong>
-      <label id="lblDate"></label>
-    </div>
-    <div>
-      <strong>Temperature (Min): </strong><label id="lblTempMin"></label><br />
-      <strong>Temperature (Max): </strong><label id="lblTempMax"></label><br />
-      <strong>Real Feel Temperature (Min): </strong><label id="lblRealFeelTemperatureMin"></label><br />
-      <strong>Real Feel Temperature (Max): </strong><label id="lblRealFeelTemperatureMax"></label><br />
-      <strong>Sun Rise: </strong><label id="lblSunRise"></label><br />
-      <strong>Sun Set: </strong><label id="lblSunSet"></label><br />
-    </div>
-  </div>
+   <div>
+      <h2 class="text-dark">Forecast Details</h2>
+      <table style="text-align: left;">
+         <tr class="table-primary">
+            <td><strong>City: </strong></td>
+            <td><span id="lblCity"></span>  ,
+               <span id="lblProvince"></span>  ,
+               <span id="lblCountry"></span>
+            </td>
+         </tr>
+         <tr class="table-primary">
+            <td><strong>City Key: </strong></td>
+            <td><label id="lblKey"></label></td>
+         </tr>
+         <tr class="table-primary">
+            <td><strong>Description: </strong></td>
+            <td>
+               <label id="lblDescription"></label>
+            </td>
+         </tr>
+         <tr class="table-primary">
+         <td><strong>Date: </strong></td>
+         <td> <label id="lblDate"></label></td>
+         </tr>
+         <tr class="table-primary">
+            <td><strong>Temperature (Min): </strong></td>
+            <td>
+               <label id="lblTempMin"></label>   
+            </td>
+         </tr>
+         <tr class="table-primary">
+         <td><strong>Temperature (Max): </strong></td>
+         <td> <label id="lblTempMax"></label>   </td>
+         </tr>
+         <tr class="table-primary">
+            <td><strong>Real Feel Temperature (Min): </strong></td>
+            <td>
+               <label id="lblRealFeelTemperatureMin"></label>
+            </td>
+         </tr>
+         <tr class="table-primary">
+         <td><strong>Real Feel Temperature (Max): </strong></td>
+         <td><label id="lblRealFeelTemperatureMax"></label>  </td>
+         </tr>
+         <tr class="table-primary">
+            <td><strong>Sun Rise: </strong></td>
+            <td> <label id="lblSunRise"></label>  </td>
+         </tr>
+         <tr class="table-primary">
+            <td><strong>Sun Set: </strong></td>
+            <td><label id="lblSunSet"></label></td>
+         </tr>
+      </table>
+   </div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="locModal" tabindex="-1" aria-labelledby="locModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="locModalLabel">Location Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="locModalLabel">Location Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <form id="w-form">
+               <div class="form-group">
+                  <label for="">City Name : </label>
+                  <input type="text" id="txtCity" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label for="">Province Name :</label>
+                  <input type="text" id="txtProvince" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label for="">Country Name :</label>
+                  <input type="text" id="txtCountry" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label for="">Date : </label>
+                  <input type="date" id="dateday" class="form-control" value="@(DateTime.Now.Date.ToString("yyyy-MM-dd"))" min="@(DateTime.Now.Date.ToString("yyyy-MM-dd"))" max="@(DateTime.Now.Date.AddDays(4).ToString("yyyy-MM-dd"))" />
+               </div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="btnSubmit" type="button" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+         </div>
       </div>
-      <div class="modal-body">
-        <form id="w-form">
-          <div class="form-group">
-            <label for="">City Name : </label>
-            <input type="text" id="txtCity" class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="">Province Name :</label>
-            <input type="text" id="txtProvince" class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="">Country Name :</label>
-            <input type="text" id="txtCountry" class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="">Date : </label>
-            <input type="date" id="dateday" class="form-control" value="@(DateTime.Now.Date.ToString("yyyy-MM-dd"))" min="@(DateTime.Now.Date.ToString("yyyy-MM-dd"))" max="@(DateTime.Now.Date.AddDays(4).ToString("yyyy-MM-dd"))" />
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button id="btnSubmit" type="button" class="btn btn-primary">Submit</button>
-      </div>
-    </div>
-  </div>
+   </div>
 </div>
-
-
 <script>
   //Show Model Pop Up
   $('#btnGetForcast').on('click', function (e) {
