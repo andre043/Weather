@@ -69,17 +69,17 @@ namespace WeatherAPI.Helpers
         //Country, province and city is populated, therefor result should return one result. 
         if (!String.IsNullOrEmpty(province) && !String.IsNullOrEmpty(country))
         {
-          cityDetail = cities.Where(c => c.Country.LocalizedName.Equals(country, StringComparison.InvariantCultureIgnoreCase) && c.AdministrativeArea.LocalizedName.Equals(province, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+          cityDetail = cities.FirstOrDefault(c => c.Country.LocalizedName.Equals(country, StringComparison.InvariantCultureIgnoreCase) && c.AdministrativeArea.LocalizedName.Equals(province, StringComparison.InvariantCultureIgnoreCase));
         }
         //Only country and province,state is populated. Should only return one city. 
         else if (!String.IsNullOrEmpty(province))
         {
-          cityDetail = cities.Where(c => c.AdministrativeArea.LocalizedName.Equals(province, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+          cityDetail = cities.FirstOrDefault(c => c.AdministrativeArea.LocalizedName.Equals(province, StringComparison.InvariantCultureIgnoreCase));
         }
         //Only country and city is populated. Can return multiple cities. 
         else if (!String.IsNullOrEmpty(country))
         {
-          cityDetail = cities.Where(c => c.Country.LocalizedName.Equals(country, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+          cityDetail = cities.FirstOrDefault(c => c.Country.LocalizedName.Equals(country, StringComparison.InvariantCultureIgnoreCase));
         }
         //Only city is populated. 
         else
