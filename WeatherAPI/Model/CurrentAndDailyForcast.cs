@@ -19,5 +19,4 @@
     public Temperature Temperature { get; set; }
     public RealFeelTemperature RealFeelTemperature { get; set; }
   }
-
 }

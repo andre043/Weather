@@ -15,18 +15,25 @@ namespace WeatherAPI.Controllers
 
     public DailyForecastsController(ILogger<DailyForecastsController> logger)
     {
+      //API Key Is Stored In App Settings so that it is easy to change. 
       string apiKey = JsonConfigurationManager.AppSetting["ApiKey"];
       _logger = logger;
       _accuweatherApi = new Accuweather.AccuweatherApi(apiKey);
     }
 
+    /// <summary>
+    /// Returns a 5 day forcast for a city. 
+    /// </summary>
+    /// <param name="city">City Name. Is Required</param>
+    /// <param name="province">Allows NULLS. Province or State Name.</param>
+    /// <param name="country">Allows NULLS. Country Name.</param>
+    /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public DailyForecastsRoot GetDailyForcasts([Required] string city, string? province, string? country)
     {
       try
       {
-
         //Helper class to minimize duplicate code. 
         CityHelper cityHelper = new CityHelper(_accuweatherApi);
         List<Cities> cities = cityHelper.GetCities(city);

@@ -12,9 +12,9 @@ namespace WeatherAPI.Controllers
     private Accuweather.AccuweatherApi _accuweatherApi;
     private readonly ILogger<CurrentAndDailyForcastController> _logger;
 
-
     public CurrentAndDailyForcastController(ILogger<CurrentAndDailyForcastController> logger)
     {
+      //API Key Is Stored In App Settings so that it is easy to change. 
       string apiKey = JsonConfigurationManager.AppSetting["ApiKey"];
       _logger = logger;
       _accuweatherApi = new Accuweather.AccuweatherApi(apiKey);
@@ -23,10 +23,13 @@ namespace WeatherAPI.Controllers
     /// <summary>
     /// Searches and returns weather forcast for city name. Will return results for first city found.
     /// </summary>
-    /// <param name="city">City Name</param>
+    /// <param name="city">City Name. Is Required</param>
+    /// <param name="province">Allows NULLS. Province or State Name.</param>
+    /// <param name="country">Allows NULLS. Country Name.</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public CurrentAndDailyForcast GetCurrentAndDailyForcast([Required] string city, string? province, string? country)
     {
       try
@@ -36,7 +39,7 @@ namespace WeatherAPI.Controllers
         //Helper class to minimize duplicate code. 
         CityHelper cityHelper = new CityHelper(_accuweatherApi);
         List<Cities> cities = cityHelper.GetCities(city);
-
+        //Make sure we got city back
         if (cities is null)
         {
           throw new Exception($"No city was found for {city}.");

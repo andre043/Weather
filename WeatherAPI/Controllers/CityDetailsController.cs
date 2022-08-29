@@ -14,13 +14,15 @@ namespace WeatherAPI.Controllers
 
     public CityDetailsController(ILogger<CityDetailsController> logger)
     {
+      //API Key Is Stored In App Settings so that it is easy to change. 
       string apiKey = JsonConfigurationManager.AppSetting["ApiKey"];
       _logger = logger;
       _accuweatherApi = new Accuweather.AccuweatherApi(apiKey);
     }
 
     /// <summary>
-    /// Returns list of cities. To get specific list use provice or country to help narrow down the search. A Country may have more than city with same name. 
+    /// Returns list of cities with inputted City Name. To get specific list use provice or country to help narrow down the search. 
+    /// A Country may have more than one city with the same name. 
     /// </summary>
     /// <param name="city">City Name. Is Required</param>
     /// <param name="province">Allows NULLS. Province or State Name.</param>
@@ -28,6 +30,7 @@ namespace WeatherAPI.Controllers
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public List<Cities> GetCityDetailsByCityCountry([Required] string city, string? province, string? country)
     {
       try

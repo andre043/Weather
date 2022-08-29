@@ -11,7 +11,6 @@ namespace WeatherAPI.Helpers
       _accuweatherApi = accuweatherApi;
     }
 
-
     public CurrentAndDailyForcast PopulateCityDetails(Cities city)
     {
       try

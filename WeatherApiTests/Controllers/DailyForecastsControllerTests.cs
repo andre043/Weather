@@ -58,8 +58,6 @@ namespace WeatherApiTests.Controllers
     {
       var data = dailyForecastsController.GetDailyForcasts("Alberton", "Eastern Cape", "South Africa");
       Assert.IsNull(data);
-      Assert.IsNull(data.Headline);
-      Assert.IsNull(data.DailyForecasts);
     }
 
     [TestMethod()]
@@ -67,8 +65,6 @@ namespace WeatherApiTests.Controllers
     {
       var data = dailyForecastsController.GetDailyForcasts(null, "Gauteng", "South Africa");
       Assert.IsNull(data);
-      Assert.IsNull(data.Headline);
-      Assert.IsNull(data.DailyForecasts);
     }
 
     [TestMethod()]
@@ -76,8 +72,6 @@ namespace WeatherApiTests.Controllers
     {
       var data = dailyForecastsController.GetDailyForcasts(null, "Gauteng", null);
       Assert.IsNull(data);
-      Assert.IsNull(data.Headline);
-      Assert.IsNull(data.DailyForecasts);
     }
 
     [TestMethod()]
@@ -85,8 +79,6 @@ namespace WeatherApiTests.Controllers
     {
       var data = dailyForecastsController.GetDailyForcasts(null, null, "South Africa");
       Assert.IsNull(data);
-      Assert.IsNull(data.Headline);
-      Assert.IsNull(data.DailyForecasts);
     }
   }
 }

@@ -13,14 +13,18 @@
     public long EpochTime { get; set; }
     public string WeatherText { get; set; }
     public int? WeatherIcon { get; set; }
+    public bool HasPrecipitation { get; set; }
+    public string PrecipitationType { get; set; }
     public LocalSource LocalSource { get; set; }
     public bool IsDayTime { get; set; }
-    public Temperature Temperature { get; set; }
-    public RealFeelTemperature RealFeelTemperature { get; set; }
-    public RealFeelTemperatureShade RealFeelTemperatureShade { get; set; }
+    public CurrentTemperature Temperature { get; set; }
+    public CurrentRealFeelTemperature RealFeelTemperature { get; set; }
+    public CurrentRealFeelTemperatureShade RealFeelTemperatureShade { get; set; }
     public int? RelativeHumidity { get; set; }
+    public bool IndoorRelativeHumidity { get; set; }
     public DewPoint DewPoint { get; set; }
-    public Wind? Wind { get; set; }
+    public CurrentWind? Wind { get; set; }
+    public CurrentWindGust? WindGust { get; set; }
     public int UVIndex { get; set; }
     public string UVIndexText { get; set; }
     public Visibility Visibility { get; set; }
@@ -38,44 +42,29 @@
     public TemperatureSummary TemperatureSummary { get; set; }
     public string MobileLink { get; set; }
     public string Link { get; set; }
-    public bool hasPrecipitation { get; set; }
-    public string PrecipitationType { get; set; }
-    public bool IndoorRelativeHumidity { get; set; }
   }
 
-  public class Metric
-  {
-    public double Value { get; set; }
-    public string Unit { get; set; }
-    public int UnitType { get; set; }
-  }
-  public class Imperial
-  {
-    public double Value { get; set; }
-    public string Unit { get; set; }
-    public int UnitType { get; set; }
-  }
   public class DewPoint
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
   public class Visibility
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
 
   public class Ceiling
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
 
   public class Pressure
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
 
   public class PressureTendency
@@ -85,31 +74,28 @@
   }
   public class Past24HourTemperatureDeparture
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
-
-
-
   public class ApparentTemperature
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
   public class WindChillTemperature
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
   public class WetBulbTemperature
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
   public class Precip1hr
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
 
   public class PrecipitationSummary
@@ -119,52 +105,53 @@
     public Past3Hours Past3Hours { get; set; }
     public Past6Hours Past6Hours { get; set; }
     public Past9Hours Past9Hours { get; set; }
-    public Past12Hour Past12Hour { get; set; }
-    public Past18Hour Past18Hour { get; set; }
+    public Past12Hours Past12Hours { get; set; }
+    public Past18Hours Past18Hours { get; set; }
     public Past24Hours Past24Hours { get; set; }
   }
 
 
+
   public class Precipitation
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
 
   public class PastHour
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
   public class Past3Hours
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
   public class Past6Hours
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
   public class Past9Hours
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
-  public class Past12Hour
+  public class Past12Hours
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
-  public class Past18Hour
+  public class Past18Hours
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
   public class Past24Hours
   {
-    public Metric Metric { get; set; }
-    public Imperial Imperial { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
 
   public class TemperatureSummary
@@ -176,46 +163,76 @@
 
   public class Past6HourRange
   {
-    public Minimum Minimum { get; set; }
-    public Maximum Maximum { get; set; }
+    public CurrentMaximum Maximum { get; set; }
+    public CurrentMinimum Minimum { get; set; }
   }
 
   public class Past12HourRange
   {
-    public Minimum Minimum { get; set; }
-    public Maximum Maximum { get; set; }
+    public CurrentMaximum Maximum { get; set; }
+    public CurrentMinimum Minimum { get; set; }
   }
   public class Past24HourRange
   {
-    public Minimum Minimum { get; set; }
-    public Maximum Maximum { get; set; }
+    public CurrentMaximum Maximum { get; set; }
+    public CurrentMinimum Minimum { get; set; }
   }
-  public class Minimum
+  public class CurrentMinimum
   {
-    public double Value { get; set; }
-    public string Unit { get; set; }
-    public int UnitType { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
-  public class Maximum
+  public class CurrentMaximum
   {
-    public double Value { get; set; }
-    public string Unit { get; set; }
-    public int UnitType { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
-  public class Temperature
+  public class CurrentRealFeelTemperatureShade
   {
-    public Minimum Minimum { get; set; }
-    public Maximum Maximum { get; set; }
+    public Metric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
 
-  public class RealFeelTemperatureShade
+  public class CurrentTemperature
   {
-    public Minimum Minimum { get; set; }
-    public Maximum Maximum { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
-  public class RealFeelTemperature
+  public class CurrentRealFeelTemperature
   {
-    public Minimum Minimum { get; set; }
-    public Maximum Maximum { get; set; }
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
+  }
+  public class CurrentMetric
+  {
+    public double Value { get; set; }
+    public string Unit { get; set; }
+    public int UnitType { get; set; }
+    public string? Phrase { get; set; }
+  }
+  public class CurrentImperial
+  {
+    public double Value { get; set; }
+    public string Unit { get; set; }
+    public int UnitType { get; set; }
+    public string? Phrase { get; set; }
+  }
+
+  public class CurrentWind
+  {
+    public CurrentSpeed Speed { get; set; }
+    public Direction Direction { get; set; }
+  }
+
+  public class CurrentWindGust
+  {
+    public CurrentSpeed Speed { get; set; }
+    public Direction Direction { get; set; }
+  }
+
+  public class CurrentSpeed
+  {
+    public CurrentMetric Metric { get; set; }
+    public CurrentImperial Imperial { get; set; }
   }
 }
