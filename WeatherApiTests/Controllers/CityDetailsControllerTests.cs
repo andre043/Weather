@@ -1,5 +1,5 @@
-using WeatherAPI.Controllers;
 using Microsoft.Extensions.Logging;
+using WeatherAPI.Controllers;
 
 namespace WeatherApiTests.Controllers
 {
@@ -18,8 +18,8 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetTest()
     {
-      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", null,null);
-      Assert.AreEqual(data?.FirstOrDefault().LocalizedName, "Alberton"); 
+      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", null, null);
+      Assert.AreEqual(data?.FirstOrDefault().LocalizedName, "Alberton");
     }
 
     [TestMethod()]
@@ -28,7 +28,6 @@ namespace WeatherApiTests.Controllers
       var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", "Gauteng", null);
       Assert.AreEqual(data?.FirstOrDefault().LocalizedName, "Alberton");
       Assert.AreEqual(data?.FirstOrDefault().AdministrativeArea.LocalizedName, "Gauteng");
-
     }
 
     [TestMethod()]
@@ -37,7 +36,6 @@ namespace WeatherApiTests.Controllers
       var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", null, "South Africa");
       Assert.AreEqual(data?.FirstOrDefault().LocalizedName, "Alberton");
       Assert.AreEqual(data?.FirstOrDefault().Country.LocalizedName, "South Africa");
-
     }
 
     [TestMethod()]
@@ -73,7 +71,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetNoResultsCountryTest()
     {
-      var data = cityDetailsController.GetCityDetailsByCityCountry(null,null, "South Africa");
+      var data = cityDetailsController.GetCityDetailsByCityCountry(null, null, "South Africa");
       Assert.AreEqual(data, null);
     }
   }

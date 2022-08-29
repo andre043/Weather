@@ -26,6 +26,7 @@ namespace WeatherAPI.Controllers
     /// <param name="city">City Name</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public CurrentAndDailyForcast GetCurrentAndDailyForcast([Required] string city, string? province, string? country)
     {
       try

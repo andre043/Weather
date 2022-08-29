@@ -1,5 +1,5 @@
-using WeatherAPI.Controllers;
 using Microsoft.Extensions.Logging;
+using WeatherAPI.Controllers;
 
 namespace WeatherApiTests.Controllers
 {
@@ -18,7 +18,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetTest()
     {
-      var data = currentAndDailyForcastController.GetCurrentAndDailyForcast("Alberton", null,null);
+      var data = currentAndDailyForcastController.GetCurrentAndDailyForcast("Alberton", null, null);
       Assert.AreEqual(data.City, "Alberton");
       Assert.IsTrue(data.Forcast.Count > 0);
     }
@@ -45,7 +45,7 @@ namespace WeatherApiTests.Controllers
     public void GetCityProvinceCountryTest()
     {
       var data = currentAndDailyForcastController.GetCurrentAndDailyForcast("Alberton", "Gauteng", "South Africa");
-      Assert.AreEqual(data.City, "Alberton"); 
+      Assert.AreEqual(data.City, "Alberton");
       Assert.AreEqual(data.Province, "Gauteng");
       Assert.AreEqual(data.Country, "South Africa");
       Assert.IsTrue(data.Forcast.Count > 0);
@@ -55,7 +55,7 @@ namespace WeatherApiTests.Controllers
     public void GetNoResultsCityProvinceCountryTest()
     {
       var data = currentAndDailyForcastController.GetCurrentAndDailyForcast("Alberton", "Eastern Cape", "South Africa");
-      Assert.AreEqual(data,null);
+      Assert.AreEqual(data, null);
     }
 
     [TestMethod()]
@@ -75,7 +75,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetNoResultsCountryTest()
     {
-      var data = currentAndDailyForcastController.GetCurrentAndDailyForcast(null,null, "South Africa");
+      var data = currentAndDailyForcastController.GetCurrentAndDailyForcast(null, null, "South Africa");
       Assert.AreEqual(data, null);
     }
   }

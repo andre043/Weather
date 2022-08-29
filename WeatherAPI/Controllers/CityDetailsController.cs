@@ -22,12 +22,13 @@ namespace WeatherAPI.Controllers
     /// <summary>
     /// Returns list of cities. To get specific list use provice or country to help narrow down the search. A Country may have more than city with same name. 
     /// </summary>
-    /// <param name="city">City Name or Suburb</param>
+    /// <param name="city">City Name. Is Required</param>
     /// <param name="province">Allows NULLS. Province or State Name.</param>
     /// <param name="country">Allows NULLS. Country Name.</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
-    public List<Cities> GetCityDetailsByCityCountry([Required]string city, string? province, string? country)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public List<Cities> GetCityDetailsByCityCountry([Required] string city, string? province, string? country)
     {
       try
       {
@@ -74,7 +75,7 @@ namespace WeatherAPI.Controllers
       }
       catch (Exception e)
       {
-        _logger.LogCritical(e, e.Message,e.InnerException);
+        _logger.LogCritical(e, e.Message, e.InnerException);
         return null;
       }
     }

@@ -30,12 +30,12 @@ namespace WeatherAPI.Helpers
           var citiesData = JsonConvert.DeserializeObject<CitiesResult>(data);
           if (citiesData.Data != null)
           {
-            if(citiesData.Data.Equals("[]"))
+            if (citiesData.Data.Equals("[]"))
             {
               throw new Exception($"No Cities Returned From AccWeather For {name}");
             }
 
-              cities = JsonConvert.DeserializeObject<List<Cities>>(citiesData.Data);
+            cities = JsonConvert.DeserializeObject<List<Cities>>(citiesData.Data);
           }
           else
           {

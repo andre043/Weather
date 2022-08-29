@@ -21,6 +21,7 @@ namespace WeatherAPI.Controllers
     }
 
     [HttpGet("byCityProvinceCountry")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public DailyForecastsRoot GetDailyForcasts([Required] string city, string? province, string? country)
     {
       try

@@ -106,6 +106,9 @@
   //Show Model Pop Up
   $('#btnGetForcast').on('click', function (e) {
       $('#locModal').modal('show');
+      $("#txtCity").val();
+      $("#txtProvince").val();
+      $("#txtCountry").val();
       });
 
    //Button 
@@ -138,6 +141,8 @@
                   $("#lblSunRise").text(data.forcast[i].sun.rise);
                   $("#lblSunSet").text(data.forcast[i].sun.set);
               }
+
+
           },
           error: function (data) {
             //error logic here

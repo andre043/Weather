@@ -22,6 +22,7 @@ namespace WeatherAPI.Controllers
     }
 
     [HttpGet("byCityProvinceCountry")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public List<CurrentCondition> GetCurrentConditions([Required] string city, string? province, string? country)
     {
       try

@@ -1,5 +1,5 @@
-using WeatherAPI.Controllers;
 using Microsoft.Extensions.Logging;
+using WeatherAPI.Controllers;
 
 namespace WeatherApiTests.Controllers
 {
@@ -18,9 +18,8 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetTest()
     {
-      var data = currentConditionsController.GetCurrentConditions("Alberton", null,null);
+      var data = currentConditionsController.GetCurrentConditions("Alberton", null, null);
       Assert.IsNotNull(data);
-
     }
 
     [TestMethod()]
@@ -48,7 +47,7 @@ namespace WeatherApiTests.Controllers
     public void GetNoResultsCityProvinceCountryTest()
     {
       var data = currentConditionsController.GetCurrentConditions("Alberton", "Eastern Cape", "South Africa");
-      Assert.AreEqual(data,null);
+      Assert.AreEqual(data, null);
     }
 
     [TestMethod()]
@@ -68,7 +67,7 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetNoResultsCountryTest()
     {
-      var data = currentConditionsController.GetCurrentConditions(null,null, "South Africa");
+      var data = currentConditionsController.GetCurrentConditions(null, null, "South Africa");
       Assert.AreEqual(data, null);
     }
   }
