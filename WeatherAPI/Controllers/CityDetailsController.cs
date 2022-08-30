@@ -29,9 +29,7 @@ namespace WeatherAPI.Controllers
     /// <param name="country">Allows NULLS. Country Name.</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public List<Cities> GetCityDetailsByCityCountry([Required] string city, string? province, string? country)
+    public ActionResult<List<Cities>> GetCityDetailsByCityCountry([Required] string city, string? province, string? country)
     {
       try
       {
@@ -74,12 +72,12 @@ namespace WeatherAPI.Controllers
           throw new Exception("No City Found For Country.");
         }
 
-        return cityDetail;
+        return Ok(cityDetail);
       }
       catch (Exception e)
       {
         _logger.LogCritical(e, e.Message, e.InnerException);
-        return null;
+        return BadRequest(e);
       }
     }
   }

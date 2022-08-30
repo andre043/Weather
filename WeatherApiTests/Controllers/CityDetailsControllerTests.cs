@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using WeatherAPI.Controllers;
+using WeatherAPI.Model;
 
 namespace WeatherApiTests.Controllers
 {
@@ -18,61 +21,74 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetTest()
     {
-      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", null, null);
-      Assert.AreEqual(data?.FirstOrDefault().LocalizedName, "Alberton");
+      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", null, null).Result;
+      var objResult = data as OkObjectResult;
+      var cities = objResult?.Value as List<Cities>;
+      Assert.AreEqual(cities?.FirstOrDefault().LocalizedName, "Alberton");
     }
 
     [TestMethod()]
     public void GetTestCityProvinceTest()
     {
-      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", "Gauteng", null);
-      Assert.AreEqual(data?.FirstOrDefault().LocalizedName, "Alberton");
-      Assert.AreEqual(data?.FirstOrDefault().AdministrativeArea.LocalizedName, "Gauteng");
+      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", "Gauteng", null).Result;
+      var objResult = data as OkObjectResult;
+      var cities = objResult?.Value as List<Cities>;
+      Assert.AreEqual(cities?.FirstOrDefault().LocalizedName, "Alberton");
+      Assert.AreEqual(cities?.FirstOrDefault().AdministrativeArea.LocalizedName, "Gauteng");
     }
 
     [TestMethod()]
     public void GetCityCountryTest()
     {
-      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", null, "South Africa");
-      Assert.AreEqual(data?.FirstOrDefault().LocalizedName, "Alberton");
-      Assert.AreEqual(data?.FirstOrDefault().Country.LocalizedName, "South Africa");
+      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", null, "South Africa").Result;
+      var objResult = data as OkObjectResult;
+      var cities = objResult?.Value as List<Cities>;
+      Assert.AreEqual(cities?.FirstOrDefault().LocalizedName, "Alberton");
+      Assert.AreEqual(cities?.FirstOrDefault().Country.LocalizedName, "South Africa");
     }
 
     [TestMethod()]
     public void GetCityProvinceCountryTest()
     {
-      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", "Gauteng", "South Africa");
-      Assert.AreEqual(data?.FirstOrDefault().LocalizedName, "Alberton");
-      Assert.AreEqual(data?.FirstOrDefault().AdministrativeArea.LocalizedName, "Gauteng");
-      Assert.AreEqual(data?.FirstOrDefault().Country.LocalizedName, "South Africa");
+      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", "Gauteng", "South Africa").Result;
+      var objResult = data as OkObjectResult;
+      var cities = objResult?.Value as List<Cities>;
+      Assert.AreEqual(cities?.FirstOrDefault().LocalizedName, "Alberton");
+      Assert.AreEqual(cities?.FirstOrDefault().AdministrativeArea.LocalizedName, "Gauteng");
+      Assert.AreEqual(cities?.FirstOrDefault().Country.LocalizedName, "South Africa");
     }
 
     [TestMethod()]
     public void GetNoResultsCityProvinceCountryTest()
     {
-      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", "Eastern Cape", "South Africa");
-      Assert.AreEqual(data.Count, 0);
+      var data = cityDetailsController.GetCityDetailsByCityCountry("Alberton", "Eastern Cape", "South Africa").Result;
+      var objResult = data as OkObjectResult;
+      var cities = objResult?.Value as List<Cities>;
+      Assert.AreEqual(cities?.Count, 0);
     }
 
     [TestMethod()]
     public void GetNoResultsProvinceCountryTest()
     {
-      var data = cityDetailsController.GetCityDetailsByCityCountry(null, "Gauteng", "South Africa");
-      Assert.AreEqual(data, null);
+      var data = cityDetailsController.GetCityDetailsByCityCountry(null, "Gauteng", "South Africa").Result;
+      var objResult = data as BadRequestObjectResult;
+      Assert.AreEqual(objResult?.StatusCode, (int)HttpStatusCode.BadRequest);
     }
 
     [TestMethod()]
     public void GetNoResultsProvinceTest()
     {
-      var data = cityDetailsController.GetCityDetailsByCityCountry(null, "Gauteng", null);
-      Assert.AreEqual(data, null);
+      var data = cityDetailsController.GetCityDetailsByCityCountry(null, "Gauteng", null).Result;
+      var objResult = data as BadRequestObjectResult;
+      Assert.AreEqual(objResult?.StatusCode, (int)HttpStatusCode.BadRequest);
     }
 
     [TestMethod()]
     public void GetNoResultsCountryTest()
     {
-      var data = cityDetailsController.GetCityDetailsByCityCountry(null, null, "South Africa");
-      Assert.AreEqual(data, null);
+      var data = cityDetailsController.GetCityDetailsByCityCountry(null, null, "South Africa").Result;
+      var objResult = data as BadRequestObjectResult;
+      Assert.AreEqual(objResult?.StatusCode, (int)HttpStatusCode.BadRequest);
     }
   }
 }

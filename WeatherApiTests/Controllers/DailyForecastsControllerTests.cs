@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using WeatherAPI.Controllers;
+using WeatherAPI.Model;
 
 namespace WeatherApiTests.Controllers
 {
@@ -18,67 +21,79 @@ namespace WeatherApiTests.Controllers
     [TestMethod()]
     public void GetTest()
     {
-      var data = dailyForecastsController.GetDailyForcasts("Alberton", null, null);
-      Assert.IsNotNull(data);
-      Assert.IsNotNull(data.Headline);
-      Assert.IsNotNull(data.DailyForecasts);
+      var data = dailyForecastsController.GetDailyForcasts("Alberton", null, null).Result;
+      var objResult = data as OkObjectResult;
+      var dailyForcast = objResult?.Value as DailyForecastsRoot;
+      Assert.IsNotNull(dailyForcast);
+      Assert.IsNotNull(dailyForcast?.Headline);
+      Assert.IsNotNull(dailyForcast?.DailyForecasts);
     }
 
     [TestMethod()]
     public void GetTestCityProvinceTest()
     {
-      var data = dailyForecastsController.GetDailyForcasts("Alberton", "Gauteng", null);
-      Assert.IsNotNull(data);
-      Assert.IsNotNull(data.Headline);
-      Assert.IsNotNull(data.DailyForecasts);
-
+      var data = dailyForecastsController.GetDailyForcasts("Alberton", "Gauteng", null).Result;
+      var objResult = data as OkObjectResult;
+      var dailyForcast = objResult?.Value as DailyForecastsRoot;
+      Assert.IsNotNull(dailyForcast);
+      Assert.IsNotNull(dailyForcast?.Headline);
+      Assert.IsNotNull(dailyForcast?.DailyForecasts);
     }
 
     [TestMethod()]
     public void GetCityCountryTest()
     {
-      var data = dailyForecastsController.GetDailyForcasts("Alberton", null, "South Africa");
-      Assert.IsNotNull(data);
-      Assert.IsNotNull(data.Headline);
-      Assert.IsNotNull(data.DailyForecasts);
+      var data = dailyForecastsController.GetDailyForcasts("Alberton", null, "South Africa").Result;
+      var objResult = data as OkObjectResult;
+      var dailyForcast = objResult?.Value as DailyForecastsRoot;
+      Assert.IsNotNull(dailyForcast);
+      Assert.IsNotNull(dailyForcast?.Headline);
+      Assert.IsNotNull(dailyForcast?.DailyForecasts);
 
     }
 
     [TestMethod()]
     public void GetCityProvinceCountryTest()
     {
-      var data = dailyForecastsController.GetDailyForcasts("Alberton", "Gauteng", "South Africa");
-      Assert.IsNotNull(data);
-      Assert.IsNotNull(data.Headline);
-      Assert.IsNotNull(data.DailyForecasts);
+      var data = dailyForecastsController.GetDailyForcasts("Alberton", "Gauteng", "South Africa").Result;
+      var objResult = data as OkObjectResult;
+      var dailyForcast = objResult?.Value as DailyForecastsRoot;
+      Assert.IsNotNull(dailyForcast);
+      Assert.IsNotNull(dailyForcast?.Headline);
+      Assert.IsNotNull(dailyForcast?.DailyForecasts);
     }
 
     [TestMethod()]
     public void GetNoResultsCityProvinceCountryTest()
     {
-      var data = dailyForecastsController.GetDailyForcasts("Alberton", "Eastern Cape", "South Africa");
-      Assert.IsNull(data);
+      var data = dailyForecastsController.GetDailyForcasts("Alberton", "Eastern Cape", "South Africa").Result;
+      var objResult = data as OkObjectResult;
+      var dailyForcast = objResult?.Value as DailyForecastsRoot;
+      Assert.AreEqual(dailyForcast?.DailyForecasts?.Count, 0);
     }
 
     [TestMethod()]
     public void GetNoResultsProvinceCountryTest()
     {
-      var data = dailyForecastsController.GetDailyForcasts(null, "Gauteng", "South Africa");
-      Assert.IsNull(data);
+      var data = dailyForecastsController.GetDailyForcasts(null, "Gauteng", "South Africa").Result;
+      var objResult = data as BadRequestObjectResult;
+      Assert.AreEqual(objResult?.StatusCode, (int)HttpStatusCode.BadRequest);
     }
 
     [TestMethod()]
     public void GetNoResultsProvinceTest()
     {
-      var data = dailyForecastsController.GetDailyForcasts(null, "Gauteng", null);
-      Assert.IsNull(data);
+      var data = dailyForecastsController.GetDailyForcasts(null, "Gauteng", null).Result;
+      var objResult = data as BadRequestObjectResult;
+      Assert.AreEqual(objResult?.StatusCode, (int)HttpStatusCode.BadRequest);
     }
 
     [TestMethod()]
     public void GetNoResultsCountryTest()
     {
-      var data = dailyForecastsController.GetDailyForcasts(null, null, "South Africa");
-      Assert.IsNull(data);
+      var data = dailyForecastsController.GetDailyForcasts(null, null, "South Africa").Result;
+      var objResult = data as BadRequestObjectResult;
+      Assert.AreEqual(objResult?.StatusCode, (int)HttpStatusCode.BadRequest);
     }
   }
 }

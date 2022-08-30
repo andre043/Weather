@@ -29,8 +29,7 @@ namespace WeatherAPI.Controllers
     /// <param name="country">Allows NULLS. Country Name.</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public DailyForecastsRoot GetDailyForcasts([Required] string city, string? province, string? country)
+    public ActionResult<DailyForecastsRoot> GetDailyForcasts([Required] string city, string? province, string? country)
     {
       try
       {
@@ -72,12 +71,12 @@ namespace WeatherAPI.Controllers
         }
 
         //Can assume postive data if the above runs successfully, error handeling in helper classes. 
-        return dailyForecastsRoot;
+        return Ok(dailyForecastsRoot);
       }
       catch (Exception e)
       {
-        _logger.LogCritical(e, e.Message);
-        return null;
+        _logger.LogCritical(e, e.Message, e.InnerException);
+        return BadRequest(e);
       }
     }
   }

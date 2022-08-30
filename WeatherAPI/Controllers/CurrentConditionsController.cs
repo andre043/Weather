@@ -29,9 +29,7 @@ namespace WeatherAPI.Controllers
     /// <param name="country">Allows NULLS. Country Name.</param>
     /// <returns></returns>
     [HttpGet("byCityProvinceCountry")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public List<CurrentCondition> GetCurrentConditions([Required] string city, string? province, string? country)
+    public ActionResult<List<CurrentCondition>> GetCurrentConditions([Required] string city, string? province, string? country)
     {
       try
       {
@@ -74,12 +72,12 @@ namespace WeatherAPI.Controllers
           throw new Exception($"No conditions returned for {city}.");
         }
 
-        return currentCondition;
+        return Ok(currentCondition);
       }
       catch (Exception e)
       {
-        _logger.LogCritical(e, e.Message);
-        return null;
+        _logger.LogCritical(e, e.Message, e.InnerException);
+        return BadRequest(e);
       }
     }
   }
